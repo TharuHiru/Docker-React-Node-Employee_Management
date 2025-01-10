@@ -1,21 +1,26 @@
+// filepath: /c:/Users/Hasindu Thirasara/Desktop/employee/Docker-React-Node-Employee_Management/frontend/src/components/Signup.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-//import axios from 'axios';
+import axios from 'axios';
 
 function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    //axios.post('http://localhost:3001/signup', { email, password })
-    //.then(result => console.log(result.result))
-    //.catch(error => console.log(error));
     
-    // Store user details (you can implement actual storage or backend logic here)
-    alert('Signup Successful!');
-    navigate('/login'); // Redirect to the login page
+    try {
+      const response = await axios.post('/api/auth/signup', { email, password });
+      if (response.status === 201) {
+        alert('Signup Successful!');
+        navigate('/login'); // Redirect to the login page
+      }
+    } catch (error) {
+      alert('Error signing up. Please try again.');
+      console.error('Signup error:', error); // Log the error for debugging
+    }
   };
 
   return (

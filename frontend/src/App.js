@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import EmployeeForm from './components/EmployeeForm';
+import React, { useState } from 'react'; // import the core library
+
+//import the two components from the components folder
+import EmployeeForm from './components/EmployeeForm'; 
 import EmployeeTable from './components/EmployeeTable';
 
+// employees is the state variable to store an employee object and stEmployee is a function to update the employee state
 function App() {
   const [employees, setEmployees] = useState([]);
 

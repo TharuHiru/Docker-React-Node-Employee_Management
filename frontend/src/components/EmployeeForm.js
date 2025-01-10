@@ -48,4 +48,4 @@ function EmployeeForm({ addEmployee }) {
   );
 }
 
-export default EmployeeForm;
+export default EmployeeForm; //Makes the EmployeeForm component available for use in other files. 

@@ -112,7 +112,6 @@ function EmployeeForm({ addEmployee }) {
         <option value="Finance">Finance</option>
         <option value="Engineering">Engineering</option>
       </select>
-      
       <input
         type="email"
         name="email"

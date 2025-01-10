@@ -31,14 +31,14 @@ function App() {
       <div className="app">
         <Routes>
           {/* Route for the Login page */}
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
 
           {/* Route for the Signup page */}
           <Route path="/signup" element={<Signup />} />
 
           {/* Route for the main Employee Management System */}
           <Route
-            path="/"
+            path="/employee-management"
             element={
               <div>
                 <h1>Employee Management System</h1>

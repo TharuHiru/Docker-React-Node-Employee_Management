@@ -1,4 +1,3 @@
-// filepath: /c:/Users/Hasindu Thirasara/Desktop/employee/Docker-React-Node-Employee_Management/frontend/src/components/Signup.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';

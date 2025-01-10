@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+//import axios from 'axios';
 
 function Signup() {
   const [email, setEmail] = useState('');
@@ -8,6 +9,10 @@ function Signup() {
 
   const handleSignup = (e) => {
     e.preventDefault();
+    //axios.post('http://localhost:3001/signup', { email, password })
+    //.then(result => console.log(result.result))
+    //.catch(error => console.log(error));
+    
     // Store user details (you can implement actual storage or backend logic here)
     alert('Signup Successful!');
     navigate('/login'); // Redirect to the login page

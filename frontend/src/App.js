@@ -38,7 +38,7 @@ function App() {
 
           {/* Route for the main Employee Management System */}
           <Route
-            path="/employee-management"
+            path="/"
             element={
               <div>
                 <h1>Employee Management System</h1>

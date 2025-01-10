@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const EmployeeModel = require('./models/Employee');
 
 const app = express();
 
@@ -16,7 +17,10 @@ mongoose.connect(process.env.MONGODB_URI, {
 .catch((err) => console.log('Error connecting to MongoDB:', err));
 
 // Test Route
-app.get('/', (req, res) => {
+app.get('/signup', (req, res) => {
+    EmployeeModel.create(req.body)
+    .then(employee => res.json(employee))
+    .catch(err => res.json(err));
   res.send('Welcome to the Employee Management System!');
 });
 

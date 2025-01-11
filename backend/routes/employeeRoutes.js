@@ -3,6 +3,18 @@ const Employee = require('../models/Employee');
 
 const router = express.Router();
 
+// Signup route
+router.post('/signup', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const newEmployee = new Employee({ email, password });
+    await newEmployee.save();
+    res.status(201).json(newEmployee);
+  } catch (err) {
+    res.status(400).json({ message: 'Error signing up', error: err });
+  }
+});
+/*
 // Add a new employee
 router.post('/employees', async (req, res) => {
   try {
@@ -44,5 +56,5 @@ router.delete('/employees/:id', async (req, res) => {
     res.status(400).json({ message: 'Error deleting employee', error: err });
   }
 });
-
+*/
 module.exports = router;

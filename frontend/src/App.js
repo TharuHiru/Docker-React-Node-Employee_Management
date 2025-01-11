@@ -31,7 +31,7 @@ function App() {
       <div className="app">
         <Routes>
           {/* Route for the Login page */}
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
 
           {/* Route for the Signup page */}
           <Route path="/signup" element={<Signup />} />

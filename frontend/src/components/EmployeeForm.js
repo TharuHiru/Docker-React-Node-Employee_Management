@@ -204,7 +204,7 @@ function EmployeeForm({ addEmployee }) {
       <button
         type="submit"
         style={{
-          background: "rgb(87, 60, 146)",
+          background: "rgb(255, 255, 255)",
           color: "#fff",
           padding: "10px 20px",
           border: "none",

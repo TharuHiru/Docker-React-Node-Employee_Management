@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import background from '../assets/employeeTeam.jpg'; // Corrected path
+import background from '../assets/employeeTeam.jpg';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -11,16 +11,14 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const response = await axios.post('http://localhost:5000/login', { email, password });
       if (response.status === 200) {
         alert('Login Successful!');
-        navigate('/'); // Redirect to the main page
-      } else {
-        alert('Invalid Email or Password!');
+        navigate('/EmployeeForm'); // Redirect to the employee list page
       }
     } catch (error) {
-      alert('Error logging in. Please try again.');
-      console.error('Login error:', error); // Log the error for debugging
+      alert('Invalid email or password. Please try again.');
+      console.error('Login error:', error);
     }
   };
 
@@ -28,8 +26,8 @@ function Login() {
     <div style={styles.container}>
       <div style={styles.overlay}></div>
       <div style={styles.formContainer}>
-        <h2 style={styles.heading}>Welcome</h2>
-        <p style={styles.subheading}>Login to access your account</p>
+        <h2 style={styles.heading}>Login</h2>
+        <p style={styles.subheading}>Welcome back! Please login to continue</p>
         <form onSubmit={handleLogin} style={styles.form}>
           <div style={styles.inputContainer}>
             <label style={styles.label}>Email:</label>
@@ -82,12 +80,12 @@ const styles = {
     left: 0,
     width: '100%',
     height: '100%',
-    background: 'rgba(0, 0, 0, 0.36)', 
+    background: 'rgba(0, 0, 0, 0.36)',
   },
   formContainer: {
     position: 'relative',
     zIndex: 1,
-    background: 'rgba(152, 118, 118, 0.87)', 
+    background: 'rgba(152, 118, 118, 0.87)',
     padding: '3rem',
     borderRadius: '15px',
     boxShadow: '0 15px 30px rgba(0, 0, 0, 0.2)',

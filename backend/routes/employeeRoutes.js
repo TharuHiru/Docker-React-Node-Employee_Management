@@ -14,6 +14,30 @@ router.post('/signup', async (req, res) => {
     res.status(400).json({ message: 'Error signing up', error: err });
   }
 });
+
+// Login route
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Find the employee by email
+    const employee = await Employee.findOne({ email });
+    if (!employee) {
+      return res.status(404).json({ message: 'Invalid email or password' });
+    }
+
+    // Compare the plain text password
+    if (employee.password !== password) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    // Authentication successful
+    res.status(200).json({ message: 'Login successful', employee });
+  } catch (err) {
+    res.status(500).json({ message: 'Error logging in', error: err });
+  }
+});
+
 /*
 // Add a new employee
 router.post('/employees', async (req, res) => {

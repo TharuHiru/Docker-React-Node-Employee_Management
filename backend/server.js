@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
 require('dotenv').config();
 const EmployeeModel = require('./models/Employee');
 const employeeRoutes = require('./routes/employeeRoutes');
@@ -39,7 +40,7 @@ mongoose
 // Use the employee routes
 app.use('/api', employeeRoutes);
 
-// Signup route (for testing)
+// Signup route (with password hashing)
 app.post('/signup', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -49,14 +50,27 @@ app.post('/signup', async (req, res) => {
             return res.status(400).json({ error: 'Email and password are required.' });
         }
 
-        const employee = await EmployeeModel.create({ email, password });
-        res.status(201).json(employee);
+        // Hash the password before saving
+        const saltRounds = 10; // Number of salt rounds
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        // Create the employee with the hashed password
+        const employee = await EmployeeModel.create({ email, password: hashedPassword });
+        res.status(201).json({ message: 'Employee created successfully', employee });
     } catch (err) {
         console.error('Error creating employee:', err);
-        // Handling different error types
+
+        // Check if the error is a duplicate key error
+        if (err.code === 11000 && err.keyPattern && err.keyPattern.email) {
+            return res.status(409).json({ error: 'Email already exists. Please use a different email.' });
+        }
+
+        // Handle other validation errors
         if (err.name === 'ValidationError') {
             return res.status(400).json({ error: 'Invalid data format.' });
         }
+
+        // Generic server error
         res.status(500).json({ error: 'Server error. Please try again later.' });
     }
 });

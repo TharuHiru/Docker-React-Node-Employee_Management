@@ -8,19 +8,42 @@ function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async (event) => {
+    event.preventDefault(); // Prevent form submission refresh
+    console.log('Attempting to login with:', { email, password }); // Log input data
+
     try {
-      const response = await axios.post('http://localhost:5000/login', { email, password });
-      if (response.status === 200) {
-        alert('Login Successful!');
-        navigate('/EmployeeForm'); // Redirect to the employee list page
-      }
-    } catch (error) {
-      alert('Invalid email or password. Please try again.');
-      console.error('Login error:', error);
+        const response = await fetch('http://localhost:5000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
+
+        console.log('Response status:', response.status); // Log response status
+
+        const data = await response.json();
+
+        console.log('Response data:', data); // Log the parsed response
+
+        if (response.ok) {
+            console.log('Login successful:', data);
+            // Perform actions after successful login, like navigation or token storage
+            alert("login successful"); 
+            navigate('/dashboard'); // Example of redirecting
+
+        } else {
+            console.error('Login failed:', data.error);
+            alert(data.error); // Display error message to user
+        }
+    } catch (err) {
+        console.error('Error during login:', err); // Log network or unexpected errors
+        alert('An error occurred. Please check your connection and try again.');
     }
-  };
+};
+
+
 
   return (
     <div style={styles.container}>

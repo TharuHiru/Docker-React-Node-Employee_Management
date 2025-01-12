@@ -75,6 +75,37 @@ app.post('/signup', async (req, res) => {
     }
 });
 
+// Login route
+app.post('/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // Validate required fields
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Email and password are required.' });
+        }
+
+        // Find the user by email
+        const employee = await EmployeeModel.findOne({ email });
+        if (!employee) {
+            return res.status(401).json({ error: 'Invalid email or password.' });
+        }
+
+        // Compare the provided password with the hashed password
+        const isPasswordValid = await bcrypt.compare(password, employee.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: 'Invalid email or password.' });
+        }
+
+        // Successful login
+        res.status(200).json({ message: 'Login successful!', employee: { email: employee.email } });
+    } catch (err) {
+        console.error('Error during login:', err);
+        res.status(500).json({ error: 'Server error. Please try again later.' });
+    }
+});
+
+
 // General error handling middleware for unknown routes
 app.use((req, res, next) => {
     res.status(404).json({ error: 'Route not found' });

@@ -38,6 +38,9 @@ function App() {
           {/* Route for the Signup page */}
           <Route path="/signup" element={<Signup />} />
 
+          <Route path="/employee-form" element={<EmployeeForm />} />
+          <Route path="/employee-table" element={<EmployeeTable />} />
+
           {/* Route for the main Employee Management System */}
           <Route
             path="/employee-management"

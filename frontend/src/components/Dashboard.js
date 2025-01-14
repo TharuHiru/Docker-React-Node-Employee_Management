@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import background from '../assets/1.png';
+import { FaUserPlus, FaUsers, FaSignOutAlt } from 'react-icons/fa';
 
 const styles = {
   container: {
@@ -9,37 +11,56 @@ const styles = {
     justifyContent: 'center',
     height: '100vh',
     fontFamily: "'Poppins', sans-serif",
-    backgroundColor: '#f4f4f4',
-    color: '#333',
+    backgroundImage: `url(${background})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
     textAlign: 'center',
     padding: '20px',
   },
   heading: {
-    fontSize: '2.5rem',
+    fontSize: '3rem',
+    fontWeight: 'bold',
     marginBottom: '1rem',
-    color: '#444',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.6)',
   },
   subheading: {
-    fontSize: '1.2rem',
+    fontSize: '1.5rem',
     marginBottom: '2rem',
-    color: '#666',
+    textShadow: '1px 1px 3px rgba(0, 0, 0, 0.4)',
   },
-  nav: {
+  cardContainer: {
     display: 'flex',
-    gap: '1rem',
+    gap: '2rem',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
     marginBottom: '2rem',
   },
-  navLink: {
-    textDecoration: 'none',
-    padding: '0.5rem 1rem',
-    backgroundColor: '#007bff',
-    color: '#fff',
-    borderRadius: '5px',
-    fontSize: '1rem',
-    transition: 'background 0.3s',
+  card: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '200px',
+    height: '200px',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: '10px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    cursor: 'pointer',
+    transition: 'transform 0.3s, background-color 0.3s',
   },
-  navLinkHover: {
-    backgroundColor: '#0056b3',
+  cardHover: {
+    transform: 'scale(1.05)',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  cardIcon: {
+    fontSize: '3rem',
+    marginBottom: '1rem',
+    color: '#fff',
+  },
+  cardText: {
+    fontSize: '1.2rem',
+    fontWeight: '500',
+    textShadow: '1px 1px 3px rgba(0, 0, 0, 0.4)',
   },
   button: {
     padding: '0.75rem 1.5rem',
@@ -49,10 +70,12 @@ const styles = {
     borderRadius: '5px',
     fontSize: '1rem',
     cursor: 'pointer',
-    transition: 'background 0.3s',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    transition: 'background 0.3s, transform 0.3s',
   },
   buttonHover: {
     backgroundColor: '#a71d2a',
+    transform: 'scale(1.05)',
   },
 };
 
@@ -60,35 +83,49 @@ function Dashboard() {
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
 
-  // Simulate fetching user data
   useEffect(() => {
     const storedUsername = localStorage.getItem('username') || 'User';
     setUsername(storedUsername);
   }, []);
 
   const handleLogout = () => {
-    localStorage.clear(); // Clear stored user data
-    navigate('/'); // Redirect to login
+    localStorage.clear();
+    navigate('/');
   };
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.heading}>Dashboard</h1>
-      <p style={styles.subheading}>Welcome, {username}! Manage your tasks effectively.</p>
-      <nav style={styles.nav}>
-        <a href="/employee-list" style={styles.navLink}>
-          Employee List
-        </a>
-        <a href="/add-employee" style={styles.navLink}>
-          Add Employee
-        </a>
-      </nav>
+      <h1 style={styles.heading}>Welcome to the Dashboard</h1>
+      <p style={styles.subheading}>Hello, {username}! Manage your workspace with ease.</p>
+
+      <div style={styles.cardContainer}>
+        <div
+          style={styles.card}
+          onMouseEnter={(e) => (e.currentTarget.style = { ...styles.card, ...styles.cardHover })}
+          onMouseLeave={(e) => (e.currentTarget.style = styles.card)}
+          onClick={() => navigate('/employee-form')}
+        >
+          <FaUserPlus style={styles.cardIcon} />
+          <p style={styles.cardText}>Employee Form</p>
+        </div>
+        <div
+          style={styles.card}
+          onMouseEnter={(e) => (e.currentTarget.style = { ...styles.card, ...styles.cardHover })}
+          onMouseLeave={(e) => (e.currentTarget.style = styles.card)}
+          onClick={() => navigate('/employee-table')}
+        >
+          <FaUsers style={styles.cardIcon} />
+          <p style={styles.cardText}>Add Employee</p>
+        </div>
+      </div>
+
       <button
         style={styles.button}
         onMouseEnter={(e) => (e.target.style.backgroundColor = styles.buttonHover.backgroundColor)}
         onMouseLeave={(e) => (e.target.style.backgroundColor = styles.button.backgroundColor)}
         onClick={handleLogout}
       >
+        <FaSignOutAlt style={{ marginRight: '0.5rem' }} />
         Logout
       </button>
     </div>

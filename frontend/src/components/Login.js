@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import background from '../assets/employeeTeam.jpg';
 
@@ -31,7 +30,7 @@ function Login() {
             console.log('Login successful:', data);
             // Perform actions after successful login, like navigation or token storage
             alert("login successful"); 
-            navigate('/dashboard'); // Example of redirecting
+            navigate('/Dashboard'); // Example of redirecting
 
         } else {
             console.error('Login failed:', data.error);

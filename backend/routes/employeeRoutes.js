@@ -1,5 +1,6 @@
 const express = require('express');
 const Employee = require('../models/Employee');
+const EmployeeDetails = require('../models/EmployeeDetails');
 
 const router = express.Router();
 
@@ -38,29 +39,30 @@ router.post('/login', async (req, res) => {
   }
 });
 
-/*
-// Add a new employee
+
+// Add a new employee details
 router.post('/employees', async (req, res) => {
   try {
-    const { name, position, salary, department } = req.body;
-    const newEmployee = new Employee({ name, position, salary, department });
-    await newEmployee.save();
-    res.status(201).json(newEmployee);
+    const { empId, firstName, lastName, department, email, mobileNo, country, state, city, dob, dateOfJoining, photo, address, salary, designation } = req.body;
+    const newEmployeeDetails = new EmployeeDetails({ empId, firstName, lastName, department, email, mobileNo, country, state, city, dob, dateOfJoining, photo, address, salary, designation });
+    await newEmployeeDetails.save();
+    res.status(201).json(newEmployeeDetails);
   } catch (err) {
     res.status(400).json({ message: 'Error adding employee', error: err });
   }
 });
 
-// Get all employees
+// Get all employees details
 router.get('/employees', async (req, res) => {
   try {
-    const employees = await Employee.find();
+    const employees = await EmployeeDetails.find();
     res.status(200).json(employees);
   } catch (err) {
     res.status(500).json({ message: 'Error fetching employees', error: err });
   }
 });
 
+/*
 // Update an employee
 router.put('/employees/:id', async (req, res) => {
   try {
@@ -81,4 +83,5 @@ router.delete('/employees/:id', async (req, res) => {
   }
 });
 */
+
 module.exports = router;

@@ -20,18 +20,33 @@ function EmployeeForm({ addEmployee }) {
     designation: "",
   });
 
+  // Handle changes in input fields
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
-    setEmployee({ ...employee, [name]: type === "file" ? files[0] : value });
+    setEmployee((prevEmployee) => ({
+      ...prevEmployee,
+      [name]: type === "file" ? files[0] : value,
+    }));
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validate required fields
     if (!employee.empId || !employee.firstName || !employee.email) {
       alert("Emp ID, First Name, and Email are required!");
       return;
     }
-    addEmployee(employee);
+
+    // Ensure the `addEmployee` prop is a function before calling it
+    if (typeof addEmployee === "function") {
+      addEmployee(employee); // Pass the employee object to the parent function
+    } else {
+      console.error("addEmployee is not a function or not provided.");
+    }
+
+    // Reset the form fields
     setEmployee({
       empId: "",
       firstName: "",
@@ -151,6 +166,7 @@ function EmployeeForm({ addEmployee }) {
             placeholder="Emp ID"
             value={employee.empId}
             onChange={handleChange}
+            required
           />
           <input
             type="text"
@@ -158,6 +174,7 @@ function EmployeeForm({ addEmployee }) {
             placeholder="First Name"
             value={employee.firstName}
             onChange={handleChange}
+            required
           />
           <input
             type="text"
@@ -166,7 +183,11 @@ function EmployeeForm({ addEmployee }) {
             value={employee.lastName}
             onChange={handleChange}
           />
-          <select name="department" value={employee.department} onChange={handleChange}>
+          <select
+            name="department"
+            value={employee.department}
+            onChange={handleChange}
+          >
             <option value="">--Select Department--</option>
             <option value="HR">HR</option>
             <option value="Finance">Finance</option>
@@ -178,6 +199,7 @@ function EmployeeForm({ addEmployee }) {
             placeholder="Email ID"
             value={employee.email}
             onChange={handleChange}
+            required
           />
           <input
             type="text"

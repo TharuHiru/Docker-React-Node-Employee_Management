@@ -1,18 +1,15 @@
-// filepath: /c:/Users/Hasindu Thirasara/Desktop/employee/Docker-React-Node-Employee_Management/backend/server.js
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
 require('dotenv').config();
-const EmployeeModel = require('./models/Employee');
 const employeeRoutes = require('./routes/employeeRoutes');
 
 const app = express();
 
 // Validate required environment variables
 if (!process.env.MONGODB_URI) {
-    console.error('MONGODB_URI is not set in the environment variables.');
-    process.exit(1);
+  console.error('MONGODB_URI is not set in the environment variables.');
+  process.exit(1);
 }
 
 // Middleware to parse incoming JSON requests
@@ -20,120 +17,54 @@ app.use(express.json());
 
 // CORS middleware
 app.use(
-    cors({
-        origin: 'http://localhost:3000', // Allow React frontend
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow specific HTTP methods
-        allowedHeaders: ['Content-Type', 'Authorization'], // Allow headers
-        credentials: true, // Allow cookies if needed
-    })
+  cors({
+    origin: 'http://localhost:3000', // Allow React frontend
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow specific HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allow headers
+    credentials: true, // Allow cookies if needed
+  })
 );
 
 // MongoDB connection with error handling
 mongoose
-    .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('Connected to MongoDB'))
-    .catch((err) => {
-        console.error('Error connecting to MongoDB:', err);
-        process.exit(1); // Exit the process if MongoDB connection fails
-    });
+  .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
+    process.exit(1); // Exit the process if MongoDB connection fails
+  });
 
 // Use the employee routes
 app.use('/api', employeeRoutes);
 
-// Signup route (with password hashing)
-app.post('/signup', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        // Validate required fields
-        if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password are required.' });
-        }
-
-        // Hash the password before saving
-        const saltRounds = 10; // Number of salt rounds
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-        // Create the employee with the hashed password
-        const employee = await EmployeeModel.create({ email, password: hashedPassword });
-        res.status(201).json({ message: 'Employee created successfully', employee });
-    } catch (err) {
-        console.error('Error creating employee:', err);
-
-        // Check if the error is a duplicate key error
-        if (err.code === 11000 && err.keyPattern && err.keyPattern.email) {
-            return res.status(409).json({ error: 'Email already exists. Please use a different email.' });
-        }
-
-        // Handle other validation errors
-        if (err.name === 'ValidationError') {
-            return res.status(400).json({ error: 'Invalid data format.' });
-        }
-
-        // Generic server error
-        res.status(500).json({ error: 'Server error. Please try again later.' });
-    }
-});
-
-// Login route
-app.post('/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        // Validate required fields
-        if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password are required.' });
-        }
-
-        // Find the user by email
-        const employee = await EmployeeModel.findOne({ email });
-        if (!employee) {
-            return res.status(401).json({ error: 'Invalid email or password.' });
-        }
-
-        // Compare the provided password with the hashed password
-        const isPasswordValid = await bcrypt.compare(password, employee.password);
-        if (!isPasswordValid) {
-            return res.status(401).json({ error: 'Invalid email or password.' });
-        }
-
-        // Successful login
-        res.status(200).json({ message: 'Login successful!', employee: { email: employee.email } });
-    } catch (err) {
-        console.error('Error during login:', err);
-        res.status(500).json({ error: 'Server error. Please try again later.' });
-    }
-});
-
-
 // General error handling middleware for unknown routes
 app.use((req, res, next) => {
-    res.status(404).json({ error: 'Route not found' });
+  res.status(404).json({ error: 'Route not found' });
 });
 
 // Centralized error handler
 app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
+  console.error(err);
+  res.status(500).json({ error: 'Internal server error' });
 });
 
 // Start the server
 const PORT = parseInt(process.env.PORT, 10) || 5001;
 let server = app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
 
 // Handle EADDRINUSE error (port already in use)
 server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-        console.error(`Port ${PORT} is already in use. Trying another port...`);
-        setTimeout(() => {
-            server.close();
-            server = app.listen(PORT + 1, () => {
-                console.log(`Server running on port ${PORT + 1}`);
-            });
-        }, 1000);
-    } else {
-        console.error(err);
-    }
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use. Trying another port...`);
+    setTimeout(() => {
+      server.close();
+      server = app.listen(PORT + 1, () => {
+        console.log(`Server running on port ${PORT + 1}`);
+      });
+    }, 1000);
+  } else {
+    console.error(err);
+  }
 });

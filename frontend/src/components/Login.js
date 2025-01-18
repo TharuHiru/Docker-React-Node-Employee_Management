@@ -12,7 +12,7 @@ function Login() {
     console.log('Attempting to login with:', { email, password }); // Log input data
 
     try {
-        const response = await fetch('http://localhost:5000/login', {
+        const response = await fetch('http://localhost:5000/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

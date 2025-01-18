@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
 const Employee = require('../models/Employee');
 const EmployeeDetails = require('../models/EmployeeDetails');
 
@@ -8,7 +9,13 @@ const router = express.Router();
 router.post('/signup', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const newEmployee = new Employee({ email, password });
+
+    // Hash the password before saving
+    const saltRounds = 10; // Number of salt rounds
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Create the employee with the hashed password
+    const newEmployee = new Employee({ email, password: hashedPassword });
     await newEmployee.save();
     res.status(201).json(newEmployee);
   } catch (err) {
@@ -27,8 +34,9 @@ router.post('/login', async (req, res) => {
       return res.status(404).json({ message: 'Invalid email or password' });
     }
 
-    // Compare the plain text password
-    if (employee.password !== password) {
+    // Compare the provided password with the hashed password
+    const isPasswordValid = await bcrypt.compare(password, employee.password);
+    if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
@@ -39,12 +47,27 @@ router.post('/login', async (req, res) => {
   }
 });
 
-
 // Add a new employee details
 router.post('/employees', async (req, res) => {
   try {
     const { empId, firstName, lastName, department, email, mobileNo, country, state, city, dob, dateOfJoining, photo, address, salary, designation } = req.body;
-    const newEmployeeDetails = new EmployeeDetails({ empId, firstName, lastName, department, email, mobileNo, country, state, city, dob, dateOfJoining, photo, address, salary, designation });
+    const newEmployeeDetails = new EmployeeDetails({
+      empId,
+      firstName,
+      lastName,
+      department,
+      email,
+      mobileNo,
+      country,
+      state,
+      city,
+      dob,
+      dateOfJoining,
+      photo,
+      address,
+      salary,
+      designation,
+    });
     await newEmployeeDetails.save();
     res.status(201).json(newEmployeeDetails);
   } catch (err) {
@@ -62,11 +85,10 @@ router.get('/employees', async (req, res) => {
   }
 });
 
-/*
 // Update an employee
 router.put('/employees/:id', async (req, res) => {
   try {
-    const updatedEmployee = await Employee.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedEmployee = await EmployeeDetails.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.status(200).json(updatedEmployee);
   } catch (err) {
     res.status(400).json({ message: 'Error updating employee', error: err });
@@ -76,12 +98,11 @@ router.put('/employees/:id', async (req, res) => {
 // Delete an employee
 router.delete('/employees/:id', async (req, res) => {
   try {
-    await Employee.findByIdAndDelete(req.params.id);
+    await EmployeeDetails.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: 'Employee deleted successfully' });
   } catch (err) {
     res.status(400).json({ message: 'Error deleting employee', error: err });
   }
 });
-*/
 
 module.exports = router;

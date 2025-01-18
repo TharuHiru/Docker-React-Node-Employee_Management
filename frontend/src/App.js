@@ -5,7 +5,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import EmployeeForm from './components/EmployeeForm';
 import EmployeeTable from './components/EmployeeTable';
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/Dashboard'; 
 
 // employees is the state variable to store an employee object and setEmployees is a function to update the employee state
 function App() {
@@ -38,7 +38,7 @@ function App() {
           {/* Route for the Signup page */}
           <Route path="/signup" element={<Signup />} />
 
-          <Route path="/employee-form" element={<EmployeeForm />} />
+          <Route path="/employee-form" element={<EmployeeForm addEmployee={addEmployee} />} />
           <Route path="/employee-table" element={<EmployeeTable />} />
 
           {/* Route for the main Employee Management System */}

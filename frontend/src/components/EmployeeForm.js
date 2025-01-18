@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import background from "../assets/2.png";
 
 function EmployeeForm({ addEmployee }) {
@@ -20,50 +21,50 @@ function EmployeeForm({ addEmployee }) {
     designation: "",
   });
 
-  // Handle changes in input fields
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
-    setEmployee((prevEmployee) => ({
-      ...prevEmployee,
-      [name]: type === "file" ? files[0] : value,
-    }));
+    setEmployee({ ...employee, [name]: type === "file" ? files[0] : value });
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validate required fields
     if (!employee.empId || !employee.firstName || !employee.email) {
       alert("Emp ID, First Name, and Email are required!");
       return;
     }
 
-    // Ensure the `addEmployee` prop is a function before calling it
-    if (typeof addEmployee === "function") {
-      addEmployee(employee); // Pass the employee object to the parent function
-    } else {
-      console.error("addEmployee is not a function or not provided.");
-    }
+    try {
+      const response = await axios.post('http://localhost:5000/api/employees', employee, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-    // Reset the form fields
-    setEmployee({
-      empId: "",
-      firstName: "",
-      lastName: "",
-      department: "",
-      email: "",
-      mobileNo: "",
-      country: "",
-      state: "",
-      city: "",
-      dob: "",
-      dateOfJoining: "",
-      photo: null,
-      address: "",
-      salary: "",
-      designation: "",
-    });
+      if (response.status === 201) {
+        alert('Employee added successfully');
+        addEmployee(response.data);
+        setEmployee({
+          empId: "",
+          firstName: "",
+          lastName: "",
+          department: "",
+          email: "",
+          mobileNo: "",
+          country: "",
+          state: "",
+          city: "",
+          dob: "",
+          dateOfJoining: "",
+          photo: null,
+          address: "",
+          salary: "",
+          designation: "",
+        });
+      }
+    } catch (error) {
+      console.error('Error adding employee:', error);
+      alert('Error adding employee. Please try again.');
+    }
   };
 
   return (
@@ -166,7 +167,6 @@ function EmployeeForm({ addEmployee }) {
             placeholder="Emp ID"
             value={employee.empId}
             onChange={handleChange}
-            required
           />
           <input
             type="text"
@@ -174,7 +174,6 @@ function EmployeeForm({ addEmployee }) {
             placeholder="First Name"
             value={employee.firstName}
             onChange={handleChange}
-            required
           />
           <input
             type="text"
@@ -183,11 +182,7 @@ function EmployeeForm({ addEmployee }) {
             value={employee.lastName}
             onChange={handleChange}
           />
-          <select
-            name="department"
-            value={employee.department}
-            onChange={handleChange}
-          >
+          <select name="department" value={employee.department} onChange={handleChange}>
             <option value="">--Select Department--</option>
             <option value="HR">HR</option>
             <option value="Finance">Finance</option>
@@ -199,7 +194,6 @@ function EmployeeForm({ addEmployee }) {
             placeholder="Email ID"
             value={employee.email}
             onChange={handleChange}
-            required
           />
           <input
             type="text"

@@ -50,6 +50,7 @@ router.post('/login', async (req, res) => {
 // Add a new employee details
 router.post('/employees', async (req, res) => {
   try {
+    console.log('Request body:', req.body); // Log the request body for debugging
     const { empId, firstName, lastName, department, email, mobileNo, country, state, city, dob, dateOfJoining, photo, address, salary, designation } = req.body;
     const newEmployeeDetails = new EmployeeDetails({
       empId,
@@ -71,6 +72,7 @@ router.post('/employees', async (req, res) => {
     await newEmployeeDetails.save();
     res.status(201).json(newEmployeeDetails);
   } catch (err) {
+    console.error('Error adding employee:', err); // Log the error for debugging
     res.status(400).json({ message: 'Error adding employee', error: err });
   }
 });

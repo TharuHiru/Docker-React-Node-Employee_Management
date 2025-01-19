@@ -1,8 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const fs = require('fs');
 require('dotenv').config();
 const employeeRoutes = require('./routes/employeeRoutes');
+const path = require('path');
 
 const app = express();
 
@@ -14,6 +16,16 @@ if (!process.env.MONGODB_URI) {
 
 // Middleware to parse incoming JSON requests
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // Add this line to parse form data
+
+// Ensure the uploads directory exists
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
+
+// Serve static files from the uploads directory
+app.use('/uploads', express.static(uploadsDir));
 
 // CORS middleware
 app.use(

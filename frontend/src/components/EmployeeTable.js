@@ -1,16 +1,33 @@
-// Import React and hooks from 'react' module
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import '../styles/EmployeeTable.css';
 
 // Defines the EmployeeTable component
-function EmployeeTable({ employees, deleteEmployee, updateEmployee }) {
+function EmployeeTable({ deleteEmployee, updateEmployee }) {
   // Tracks the ID of the employee currently being edited
   const [editMode, setEditMode] = useState(null);
   // Stores the details of the employee currently being edited
   const [editedEmployee, setEditedEmployee] = useState({});
+  // Stores the list of employees
+  const [employees, setEmployees] = useState([]);
+
+  // Fetch employee data from the backend when the component mounts
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/employees');
+        setEmployees(response.data);
+      } catch (error) {
+        console.error('Error fetching employees:', error);
+      }
+    };
+
+    fetchEmployees();
+  }, []);
 
   // Handle the edit button of the table rows
   const handleEdit = (employee) => {
-    setEditMode(employee.Id);
+    setEditMode(employee._id);
     setEditedEmployee(employee);
   };
 
@@ -21,14 +38,23 @@ function EmployeeTable({ employees, deleteEmployee, updateEmployee }) {
   };
 
   // Handle the update button in the table
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     // Validate required fields
     if (!editedEmployee.empId || !editedEmployee.firstName || !editedEmployee.email) {
       alert('Emp ID, First Name, and Email are required!');
       return;
     }
-    updateEmployee(editMode, editedEmployee);
-    setEditMode(null); // Exit edit mode
+
+    try {
+      const response = await axios.put(`http://localhost:5000/api/employees/${editMode}`, editedEmployee);
+      if (response.status === 200) {
+        setEmployees(employees.map((employee) => (employee._id === editMode ? editedEmployee : employee)));
+        setEditMode(null); // Exit edit mode
+      }
+    } catch (error) {
+      console.error('Error updating employee:', error);
+      alert('Error updating employee. Please try again.');
+    }
   };
 
   return (
@@ -58,8 +84,8 @@ function EmployeeTable({ employees, deleteEmployee, updateEmployee }) {
           </thead>
           <tbody>
             {employees.map((employee) => (
-              <tr key={employee.Id}>
-                {editMode === employee.Id ? (
+              <tr key={employee._id}>
+                {editMode === employee._id ? (
                   <>
                     <td>
                       <input

@@ -34,9 +34,14 @@ function EmployeeForm({ addEmployee }) {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/employees', employee, {
+      const formData = new FormData();
+      for (const key in employee) {
+        formData.append(key, employee[key]);
+      }
+
+      const response = await axios.post('http://localhost:5000/api/employees', formData, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
 
@@ -68,109 +73,107 @@ function EmployeeForm({ addEmployee }) {
   };
 
   return (
-    <>
-      <div className="form-container">
-        <form onSubmit={handleSubmit}>
-          <h1>Add Employee</h1>
-          <input
-            type="text"
-            name="empId"
-            placeholder="Emp ID"
-            value={employee.empId}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="firstName"
-            placeholder="First Name"
-            value={employee.firstName}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="lastName"
-            placeholder="Last Name"
-            value={employee.lastName}
-            onChange={handleChange}
-          />
-          <select name="department" value={employee.department} onChange={handleChange}>
-            <option value="">--Select Department--</option>
-            <option value="HR">HR</option>
-            <option value="Finance">Finance</option>
-            <option value="Engineering">Engineering</option>
-          </select>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email ID"
-            value={employee.email}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="mobileNo"
-            placeholder="Mobile No"
-            value={employee.mobileNo}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="country"
-            placeholder="Country"
-            value={employee.country}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="state"
-            placeholder="State"
-            value={employee.state}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="city"
-            placeholder="City"
-            value={employee.city}
-            onChange={handleChange}
-          />
-          <input
-            type="date"
-            name="dob"
-            value={employee.dob}
-            onChange={handleChange}
-          />
-          <input
-            type="date"
-            name="dateOfJoining"
-            value={employee.dateOfJoining}
-            onChange={handleChange}
-          />
-          <input type="file" name="photo" onChange={handleChange} />
-          <textarea
-            name="address"
-            placeholder="Address"
-            value={employee.address}
-            onChange={handleChange}
-          ></textarea>
-          <input
-            type="text"
-            name="salary"
-            placeholder="Salary"
-            value={employee.salary}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="designation"
-            placeholder="Designation"
-            value={employee.designation}
-            onChange={handleChange}
-          />
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-    </>
+    <div className="form-container">
+      <form onSubmit={handleSubmit}>
+        <h1>Add Employee</h1>
+        <input
+          type="text"
+          name="empId"
+          placeholder="Emp ID"
+          value={employee.empId}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="firstName"
+          placeholder="First Name"
+          value={employee.firstName}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="lastName"
+          placeholder="Last Name"
+          value={employee.lastName}
+          onChange={handleChange}
+        />
+        <select name="department" value={employee.department} onChange={handleChange}>
+          <option value="">--Select Department--</option>
+          <option value="HR">HR</option>
+          <option value="Finance">Finance</option>
+          <option value="Engineering">Engineering</option>
+        </select>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email ID"
+          value={employee.email}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="mobileNo"
+          placeholder="Mobile No"
+          value={employee.mobileNo}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="country"
+          placeholder="Country"
+          value={employee.country}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="state"
+          placeholder="State"
+          value={employee.state}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="city"
+          placeholder="City"
+          value={employee.city}
+          onChange={handleChange}
+        />
+        <input
+          type="date"
+          name="dob"
+          value={employee.dob}
+          onChange={handleChange}
+        />
+        <input
+          type="date"
+          name="dateOfJoining"
+          value={employee.dateOfJoining}
+          onChange={handleChange}
+        />
+        <input type="file" name="photo" onChange={handleChange} />
+        <textarea
+          name="address"
+          placeholder="Address"
+          value={employee.address}
+          onChange={handleChange}
+        ></textarea>
+        <input
+          type="text"
+          name="salary"
+          placeholder="Salary"
+          value={employee.salary}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="designation"
+          placeholder="Designation"
+          value={employee.designation}
+          onChange={handleChange}
+        />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
   );
 }
 

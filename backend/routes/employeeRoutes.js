@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
+const multer = require('multer');
 const Employee = require('../models/Employee');
 const EmployeeDetails = require('../models/EmployeeDetails');
 
@@ -47,11 +48,24 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+
+const upload = multer({ storage });
+
 // Add a new employee details
-router.post('/employees', async (req, res) => {
+router.post('/employees', upload.single('photo'), async (req, res) => {
   try {
     console.log('Request body:', req.body); // Log the request body for debugging
-    const { empId, firstName, lastName, department, email, mobileNo, country, state, city, dob, dateOfJoining, photo, address, salary, designation } = req.body;
+    const { empId, firstName, lastName, department, email, mobileNo, country, state, city, dob, dateOfJoining, address, salary, designation } = req.body;
+    const photo = req.file ? req.file.path : null;
     const newEmployeeDetails = new EmployeeDetails({
       empId,
       firstName,

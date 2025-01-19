@@ -1,0 +1,102 @@
+/* General container styling with background image */
+div {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-image: url('../assets/1.png');
+    background-size: cover;
+    background-blend-mode: overlay;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Table styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  table th,
+  table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Input fields in edit mode */
+  input[type="text"],
+  input[type="email"],
+  input[type="date"],
+  select {
+    width: 100%;
+    padding: 8px;
+    margin: 2px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+  
+  /* Button styling */
+  button {
+    padding: 6px 12px;
+    margin: 0 4px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  button:hover {
+    opacity: 0.9;
+  }
+  
+  /* Save button */
+  button:nth-child(1) {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  /* Cancel button */
+  button:nth-child(2) {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  /* Edit and Delete buttons */
+  button:nth-child(1):not([onclick*="handleUpdate"]) {
+    background-color: #2196F3;
+    color: white;
+  }
+  
+  button:nth-child(2):not([onclick*="setEditMode"]) {
+    background-color: #FF5722;
+    color: white;
+  }
+  
+  /* Message for no employees */
+  p {
+    font-size: 16px;
+    color: #666;
+    text-align: center;
+    margin-top: 20px;
+  }
+  

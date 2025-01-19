@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios';
-import background from "../assets/2.png";
+import '../styles/employeeForm.css';
 
 function EmployeeForm({ addEmployee }) {
   const [employee, setEmployee] = useState({
@@ -69,95 +69,6 @@ function EmployeeForm({ addEmployee }) {
 
   return (
     <>
-      <style>
-        {`
-          .form-container {
-            background-image: url(${background});
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          }
-
-          form {
-            max-width: 650px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.36); /* Transparent white */
-            padding: 60px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
-            font-family: Arial, sans-serif;
-            color: #333;
-          }
-
-          form h1 {
-            text-align: center;
-            color: rgb(229, 222, 243);
-            margin-bottom: 20px;
-          }
-
-          form input,
-          form select,
-          form textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-          }
-
-          form textarea {
-            resize: none;
-            height: 80px;
-          }
-
-          form input[type="file"] {
-            padding: 3px;
-          }
-
-          form button {
-            background: rgb(45, 15, 110);
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s ease, transform 0.2s ease;
-          }
-
-          form button:hover {
-            background: rgb(30, 10, 90);
-            transform: scale(1.05);
-          }
-
-          form button:active {
-            background: rgb(20, 5, 70);
-          }
-
-          @media (max-width: 768px) {
-            form {
-              padding: 40px;
-            }
-
-            form input,
-            form select,
-            form textarea {
-              font-size: 13px;
-            }
-
-            form button {
-              font-size: 14px;
-              padding: 8px 16px;
-            }
-          }
-        `}
-      </style>
-
       <div className="form-container">
         <form onSubmit={handleSubmit}>
           <h1>Add Employee</h1>

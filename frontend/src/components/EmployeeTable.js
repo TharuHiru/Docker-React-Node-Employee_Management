@@ -58,7 +58,7 @@ function EmployeeTable({ deleteEmployee, updateEmployee }) {
   };
 
   return (
-    <div>
+    <div className="employee-table-container">
       <h2>Employee List</h2>
       {employees.length === 0 ? (
         <p>No employees added yet.</p>
@@ -197,8 +197,8 @@ function EmployeeTable({ deleteEmployee, updateEmployee }) {
                       />
                     </td>
                     <td>
-                      <button onClick={handleUpdate}>Save</button>
-                      <button onClick={() => setEditMode(null)}>Cancel</button>
+                      <button className="update-btn" onClick={handleUpdate}>Save</button>
+                      <button className="update-btn" onClick={() => setEditMode(null)}>Cancel</button>
                     </td>
                   </>
                 ) : (
@@ -217,8 +217,8 @@ function EmployeeTable({ deleteEmployee, updateEmployee }) {
                     <td>{employee.salary}</td>
                     <td>{employee.designation}</td>
                     <td>
-                      <button onClick={() => handleEdit(employee)}>Edit</button>
-                      <button onClick={() => deleteEmployee(employee.empId)}>Delete</button>
+                      <button className="update-btn" onClick={() => handleEdit(employee)}>Edit</button>
+                      <button className="delete-btn" onClick={() => deleteEmployee(employee._id)}>Delete</button>
                     </td>
                   </>
                 )}

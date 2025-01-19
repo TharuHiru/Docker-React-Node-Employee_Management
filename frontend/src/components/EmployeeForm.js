@@ -76,6 +76,8 @@ function EmployeeForm({ addEmployee }) {
     <div className="form-container">
       <form onSubmit={handleSubmit}>
         <h1>Add Employee</h1>
+        
+        <label htmlFor="empId">Employee ID:</label>
         <input
           type="text"
           name="empId"
@@ -83,6 +85,8 @@ function EmployeeForm({ addEmployee }) {
           value={employee.empId}
           onChange={handleChange}
         />
+
+        <label htmlFor="firstName">First Name:</label>
         <input
           type="text"
           name="firstName"
@@ -90,6 +94,8 @@ function EmployeeForm({ addEmployee }) {
           value={employee.firstName}
           onChange={handleChange}
         />
+
+        <label htmlFor="lastName">Last Name:</label>
         <input
           type="text"
           name="lastName"
@@ -97,12 +103,16 @@ function EmployeeForm({ addEmployee }) {
           value={employee.lastName}
           onChange={handleChange}
         />
+
+        <label htmlFor="department">Department:</label>
         <select name="department" value={employee.department} onChange={handleChange}>
           <option value="">--Select Department--</option>
           <option value="HR">HR</option>
           <option value="Finance">Finance</option>
           <option value="Engineering">Engineering</option>
         </select>
+
+        <label htmlFor="email">Email ID:</label>
         <input
           type="email"
           name="email"
@@ -110,6 +120,8 @@ function EmployeeForm({ addEmployee }) {
           value={employee.email}
           onChange={handleChange}
         />
+
+        <label htmlFor="mobileNo">Mobile No:</label>
         <input
           type="text"
           name="mobileNo"
@@ -117,6 +129,8 @@ function EmployeeForm({ addEmployee }) {
           value={employee.mobileNo}
           onChange={handleChange}
         />
+
+        <label htmlFor="country">Country:</label>
         <input
           type="text"
           name="country"
@@ -124,6 +138,8 @@ function EmployeeForm({ addEmployee }) {
           value={employee.country}
           onChange={handleChange}
         />
+
+        <label htmlFor="state">State:</label>
         <input
           type="text"
           name="state"
@@ -131,6 +147,8 @@ function EmployeeForm({ addEmployee }) {
           value={employee.state}
           onChange={handleChange}
         />
+
+        <label htmlFor="city">City:</label>
         <input
           type="text"
           name="city"
@@ -138,25 +156,35 @@ function EmployeeForm({ addEmployee }) {
           value={employee.city}
           onChange={handleChange}
         />
+
+        <label htmlFor="dob">Date of Birth:</label>
         <input
           type="date"
           name="dob"
           value={employee.dob}
           onChange={handleChange}
         />
+
+        <label htmlFor="dateOfJoining">Date of Joining:</label>
         <input
           type="date"
           name="dateOfJoining"
           value={employee.dateOfJoining}
           onChange={handleChange}
         />
+
+        <label htmlFor="photo">Photo:</label>
         <input type="file" name="photo" onChange={handleChange} />
+
+        <label htmlFor="address">Address:</label>
         <textarea
           name="address"
           placeholder="Address"
           value={employee.address}
           onChange={handleChange}
         ></textarea>
+
+        <label htmlFor="salary">Salary:</label>
         <input
           type="text"
           name="salary"
@@ -164,6 +192,8 @@ function EmployeeForm({ addEmployee }) {
           value={employee.salary}
           onChange={handleChange}
         />
+
+        <label htmlFor="designation">Designation:</label>
         <input
           type="text"
           name="designation"
@@ -171,6 +201,7 @@ function EmployeeForm({ addEmployee }) {
           value={employee.designation}
           onChange={handleChange}
         />
+
         <button type="submit">Submit</button>
       </form>
     </div>

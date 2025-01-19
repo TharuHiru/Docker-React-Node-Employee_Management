@@ -6,6 +6,9 @@
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(12px);
+    max-width: 100%; 
+    margin: auto; 
+    overflow-x: auto; 
 }
 
 .employee-table-container:hover {
@@ -24,10 +27,11 @@
 }
 
 .employee-table-container table {
-    width: 100%;
+    width: 100%; /* Make table take full container width */
     border-collapse: collapse;
     background-color: rgba(255, 255, 255, 0.85);
     border-radius: 12px;
+    overflow: hidden; /* Prevent content overflow */
 }
 
 .employee-table-container th, .employee-table-container td {
@@ -99,4 +103,23 @@
 .employee-table-container button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .employee-table-container {
+        padding: 20px; /* Reduce padding for small screens */
+    }
+
+    .employee-table-container table {
+        font-size: 14px; /* Reduce font size in table */
+    }
+
+    .employee-table-container th, .employee-table-container td {
+        padding: 12px; /* Reduce cell padding */
+    }
+
+    .employee-table-container h2 {
+        font-size: 28px; /* Reduce heading font size */
+    }
 }

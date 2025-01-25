@@ -1,18 +1,18 @@
-.employee-table-container {
+body {
+    background-color: red;  /* Red background fallback */
     background-image: url('../assets/1.png');
-    background-size: cover;
-    background-position: center;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(12px);
-    max-width: 100%; 
-    margin: auto; 
-    overflow-x: auto; 
+    background-size: cover;  /* Ensure the image covers the entire background */
+    background-position: center;  /* Center the image */
 }
 
-.employee-table-container:hover {
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+
+.employee-table-container {
+    height: 100%;  /* or set a specific height like 500px */
+    background-position: center;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    max-width: 100%; 
+    overflow-x: auto; 
 }
 
 .employee-table-container h2 {
@@ -28,8 +28,9 @@
 
 .employee-table-container table {
     width: 100%; /* Make table take full container width */
+    height: 100%;
     border-collapse: collapse;
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(75, 31, 31, 0.85);
     border-radius: 12px;
     overflow: hidden; /* Prevent content overflow */
 }
@@ -44,7 +45,7 @@
 }
 
 .employee-table-container th {
-    background-color: #9034db;
+    background-color: #000000;
     color: white;
     font-weight: bold;
     position: sticky;
@@ -97,6 +98,18 @@
 .employee-table-container .delete-btn:hover {
     background-color: #c0392b;
     box-shadow: 0 6px 15px rgba(231, 76, 60, 0.5);
+    transform: scale(1.05);
+}
+
+.employee-table-container .edit-btn {
+    background-color: #105dc9;
+    color: white;
+    box-shadow: 0 4px 10px rgba(8, 17, 83, 0.3);
+}
+
+.employee-table-container .edit-btn:hover {
+    background-color: rgba(8, 17, 83);
+    box-shadow: 0 6px 15px rgba(8, 17, 83, 0.3);
     transform: scale(1.05);
 }
 

@@ -1,3 +1,8 @@
+html, body {
+  overflow: auto; /* or overflow: visible */
+  height: 100%; /* Ensure proper height for scrolling */
+}
+
 .form-container {
     background-image: url('../assets/1.png');
     background-size: cover;

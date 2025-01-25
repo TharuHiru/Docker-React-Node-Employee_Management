@@ -62,103 +62,102 @@ function EmployeeTable({ deleteEmployee }) {
   };
 
   return (
+    <><button
+      type="button"
+      onClick={handleBackClick}
+      className="back-btn"
+      aria-label="Go back to the previous page"
+    >
+      <span>&larr;</span> Back
+    </button>
+    <h2 style={{ color: 'white' }}>Employee List</h2>
     <div className="employee-table-container">
-      <button
-        type="button"
-        onClick={handleBackClick}
-        className="back-btn"
-        aria-label="Go back to the previous page"
-      >
-        <span>&larr;</span> Back
-      </button>
-      <h2>Employee List</h2>
-      {employees.length === 0 ? (
-        <p>No employees added yet.</p>
-      ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Emp ID</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Department</th>
-              <th>Email</th>
-              <th>Mobile No</th>
-              <th>Country</th>
-              <th>State</th>
-              <th>City</th>
-              <th>DOB</th>
-              <th>Date of Joining</th>
-              <th>Salary</th>
-              <th>Designation</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {employees.map((employee) => (
-              <tr key={employee._id}>
-                {editMode === employee._id ? (
-                  <>
-                    {Object.keys(editedEmployee).map((key) => (
-                      <td key={key}>
-                        <input
-                          type={key === 'dob' || key === 'dateOfJoining' ? 'date' : 'text'}
-                          name={key}
-                          value={editedEmployee[key]}
-                          onChange={handleChange}
-                          disabled={key === 'empId'}
-                        />
-                      </td>
-                    ))}
-                    <td>
-                      <button className="update-btn" onClick={handleUpdate}>
-                        Save
-                      </button>
-                      <button
-                        className="update-btn cancel-btn"
-                        onClick={() => setEditMode(null)}
-                      >
-                        Cancel
-                      </button>
-                    </td>
-                  </>
-                ) : (
-                  <>
-                    <td>{employee.empId}</td>
-                    <td>{employee.firstName}</td>
-                    <td>{employee.lastName}</td>
-                    <td>{employee.department}</td>
-                    <td>{employee.email}</td>
-                    <td>{employee.mobileNo}</td>
-                    <td>{employee.country}</td>
-                    <td>{employee.state}</td>
-                    <td>{employee.city}</td>
-                    <td>{employee.dob}</td>
-                    <td>{employee.dateOfJoining}</td>
-                    <td>{employee.salary}</td>
-                    <td>{employee.designation}</td>
-                    <td>
-                      <button
-                        className="edit-btn"
-                        onClick={() => handleEdit(employee)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="delete-btn"
-                        onClick={() => deleteEmployee(employee._id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </>
-                )}
+        {employees.length === 0 ? (
+          <p>No employees added yet.</p>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Emp ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Department</th>
+                <th>Email</th>
+                <th>Mobile No</th>
+                <th>Country</th>
+                <th>State</th>
+                <th>City</th>
+                <th>DOB</th>
+                <th>Date of Joining</th>
+                <th>Salary</th>
+                <th>Designation</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+            </thead>
+            <tbody>
+              {employees.map((employee) => (
+                <tr key={employee._id}>
+                  {editMode === employee._id ? (
+                    <>
+                      {Object.keys(editedEmployee).map((key) => (
+                        <td key={key}>
+                          <input
+                            type={key === 'dob' || key === 'dateOfJoining' ? 'date' : 'text'}
+                            name={key}
+                            value={editedEmployee[key]}
+                            onChange={handleChange}
+                            disabled={key === 'empId'} />
+                        </td>
+                      ))}
+                      <td>
+                        <button className="update-btn" onClick={handleUpdate}>
+                          Save
+                        </button>
+                        <button
+                          className="update-btn cancel-btn"
+                          onClick={() => setEditMode(null)}
+                        >
+                          Cancel
+                        </button>
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td>{employee.empId}</td>
+                      <td>{employee.firstName}</td>
+                      <td>{employee.lastName}</td>
+                      <td>{employee.department}</td>
+                      <td>{employee.email}</td>
+                      <td>{employee.mobileNo}</td>
+                      <td>{employee.country}</td>
+                      <td>{employee.state}</td>
+                      <td>{employee.city}</td>
+                      <td>{employee.dob}</td>
+                      <td>{employee.dateOfJoining}</td>
+                      <td>{employee.salary}</td>
+                      <td>{employee.designation}</td>
+                      <td>
+                        <button
+                          className="edit-btn"
+                          onClick={() => handleEdit(employee)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="delete-btn"
+                          onClick={() => deleteEmployee(employee._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div></>
   );
 }
 

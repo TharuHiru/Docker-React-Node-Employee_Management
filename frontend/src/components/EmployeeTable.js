@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/EmployeeTable.css';
 
 function EmployeeTable({ deleteEmployee }) {
-  const navigate = useNavigate(); // Navigation hook
-  const [editMode, setEditMode] = useState(null); // Tracks the employee being edited
-  const [editedEmployee, setEditedEmployee] = useState({}); // Stores edited employee data
-  const [employees, setEmployees] = useState([]); // Stores employee list
+  const navigate = useNavigate();
+  const [editMode, setEditMode] = useState(null);
+  const [editedEmployee, setEditedEmployee] = useState({});
+  const [employees, setEmployees] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDepartment, setSelectedDepartment] = useState('');
 
   // Fetch employee data on component mount
   useEffect(() => {
@@ -23,24 +25,41 @@ function EmployeeTable({ deleteEmployee }) {
     fetchEmployees();
   }, []);
 
-  // Navigate back to the previous page
+  // Filter employees based on search term and department
+  const filteredEmployees = employees.filter((employee) => {
+    const nameMatch = `${employee.firstName} ${employee.lastName}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const departmentMatch = selectedDepartment
+      ? employee.department === selectedDepartment
+      : true;
+    return nameMatch && departmentMatch;
+  });
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // Handle department filter change
+  const handleDepartmentChange = (e) => {
+    setSelectedDepartment(e.target.value);
+  };
+
   const handleBackClick = () => {
     navigate(-1);
   };
 
-  // Enable edit mode for a specific employee
   const handleEdit = (employee) => {
     setEditMode(employee._id);
     setEditedEmployee(employee);
   };
 
-  // Update the editedEmployee state on input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedEmployee((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Update employee data
   const handleUpdate = async () => {
     if (!editedEmployee.empId || !editedEmployee.firstName || !editedEmployee.email) {
       alert('Emp ID, First Name, and Email are required!');
@@ -62,18 +81,45 @@ function EmployeeTable({ deleteEmployee }) {
   };
 
   return (
-    <><button
-      type="button"
-      onClick={handleBackClick}
-      className="back-btn"
-      aria-label="Go back to the previous page"
-    >
-      <span>&larr;</span> Back
-    </button>
-    <h2 style={{ color: 'white' }}>Employee List</h2>
-    <div className="employee-table-container">
-        {employees.length === 0 ? (
-          <p>No employees added yet.</p>
+    <>
+      <button
+        type="button"
+        onClick={handleBackClick}
+        className="back-btn"
+        aria-label="Go back to the previous page"
+      >
+        <span>&larr;</span> Back
+      </button>
+      <h2 style={{ color: 'white' }}>Employee List</h2>
+
+      {/* Search and Filter Section */}
+      <div className="employee-search-filter">
+        <input
+          type="text"
+          placeholder="Search by name"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="search-input"
+        />
+        <select
+          value={selectedDepartment}
+          onChange={handleDepartmentChange}
+          className="department-select"
+        >
+          <option value="">All Departments</option>
+          {Array.from(new Set(employees.map((employee) => employee.department)))
+            .sort()
+            .map((department) => (
+              <option key={department} value={department}>
+                {department}
+              </option>
+            ))}
+        </select>
+      </div>
+
+      <div className="employee-table-container">
+        {filteredEmployees.length === 0 ? (
+          <p>No employees found.</p>
         ) : (
           <table>
             <thead>
@@ -95,7 +141,7 @@ function EmployeeTable({ deleteEmployee }) {
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee) => (
+              {filteredEmployees.map((employee) => (
                 <tr key={employee._id}>
                   {editMode === employee._id ? (
                     <>
@@ -106,7 +152,8 @@ function EmployeeTable({ deleteEmployee }) {
                             name={key}
                             value={editedEmployee[key]}
                             onChange={handleChange}
-                            disabled={key === 'empId'} />
+                            disabled={key === 'empId'}
+                          />
                         </td>
                       ))}
                       <td>
@@ -157,7 +204,8 @@ function EmployeeTable({ deleteEmployee }) {
             </tbody>
           </table>
         )}
-      </div></>
+      </div>
+    </>
   );
 }
 

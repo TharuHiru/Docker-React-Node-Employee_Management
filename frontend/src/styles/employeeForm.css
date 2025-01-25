@@ -93,3 +93,29 @@
       padding: 8px 16px;
     }
   }
+
+  /* Back Button Styling */
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 15px;
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #e65c50;
+  transform: scale(1.05);
+}
+
+.back-btn span {
+  margin-right: 5px;
+  font-size: 18px;
+}

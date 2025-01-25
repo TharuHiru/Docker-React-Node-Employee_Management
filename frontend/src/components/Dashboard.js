@@ -25,11 +25,11 @@ function Dashboard() {
   <div className="card-container">
     <div className="card" onClick={() => navigate('/employee-form')}>
       <FaUserPlus className="card-icon" />
-      <p className="card-text">Employee Form</p>
+      <p className="card-text">Add Employee</p>
     </div>
     <div className="card" onClick={() => navigate('/employee-table')}>
       <FaUsers className="card-icon" />
-      <p className="card-text">Add Employee</p>
+      <p className="card-text">View Employee</p>
     </div>
   </div>
 

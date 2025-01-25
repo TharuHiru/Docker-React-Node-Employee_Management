@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import '../styles/EmployeeTable.css';
 
-// Defines the EmployeeTable component
-function EmployeeTable({ deleteEmployee, updateEmployee }) {
-  // Tracks the ID of the employee currently being edited
-  const [editMode, setEditMode] = useState(null);
-  // Stores the details of the employee currently being edited
-  const [editedEmployee, setEditedEmployee] = useState({});
-  // Stores the list of employees
-  const [employees, setEmployees] = useState([]);
+function EmployeeTable({ deleteEmployee }) {
+  const navigate = useNavigate(); // Navigation hook
+  const [editMode, setEditMode] = useState(null); // Tracks the employee being edited
+  const [editedEmployee, setEditedEmployee] = useState({}); // Stores edited employee data
+  const [employees, setEmployees] = useState([]); // Stores employee list
 
-  // Fetch employee data from the backend when the component mounts
+  // Fetch employee data on component mount
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -25,21 +23,25 @@ function EmployeeTable({ deleteEmployee, updateEmployee }) {
     fetchEmployees();
   }, []);
 
-  // Handle the edit button of the table rows
+  // Navigate back to the previous page
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
+  // Enable edit mode for a specific employee
   const handleEdit = (employee) => {
     setEditMode(employee._id);
     setEditedEmployee(employee);
   };
 
-  // Handle changes to the input fields
+  // Update the editedEmployee state on input change
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditedEmployee({ ...editedEmployee, [name]: value });
+    setEditedEmployee((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle the update button in the table
+  // Update employee data
   const handleUpdate = async () => {
-    // Validate required fields
     if (!editedEmployee.empId || !editedEmployee.firstName || !editedEmployee.email) {
       alert('Emp ID, First Name, and Email are required!');
       return;
@@ -48,7 +50,9 @@ function EmployeeTable({ deleteEmployee, updateEmployee }) {
     try {
       const response = await axios.put(`http://localhost:5000/api/employees/${editMode}`, editedEmployee);
       if (response.status === 200) {
-        setEmployees(employees.map((employee) => (employee._id === editMode ? editedEmployee : employee)));
+        setEmployees((prev) =>
+          prev.map((employee) => (employee._id === editMode ? editedEmployee : employee))
+        );
         setEditMode(null); // Exit edit mode
       }
     } catch (error) {
@@ -59,6 +63,14 @@ function EmployeeTable({ deleteEmployee, updateEmployee }) {
 
   return (
     <div className="employee-table-container">
+      <button
+        type="button"
+        onClick={handleBackClick}
+        className="back-btn"
+        aria-label="Go back to the previous page"
+      >
+        <span>&larr;</span> Back
+      </button>
       <h2>Employee List</h2>
       {employees.length === 0 ? (
         <p>No employees added yet.</p>
@@ -87,118 +99,27 @@ function EmployeeTable({ deleteEmployee, updateEmployee }) {
               <tr key={employee._id}>
                 {editMode === employee._id ? (
                   <>
+                    {Object.keys(editedEmployee).map((key) => (
+                      <td key={key}>
+                        <input
+                          type={key === 'dob' || key === 'dateOfJoining' ? 'date' : 'text'}
+                          name={key}
+                          value={editedEmployee[key]}
+                          onChange={handleChange}
+                          disabled={key === 'empId'}
+                        />
+                      </td>
+                    ))}
                     <td>
-                      <input
-                        type="text"
-                        name="empId"
-                        value={editedEmployee.empId}
-                        onChange={handleChange}
-                        disabled
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="firstName"
-                        value={editedEmployee.firstName}
-                        onChange={handleChange}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="lastName"
-                        value={editedEmployee.lastName}
-                        onChange={handleChange}
-                      />
-                    </td>
-                    <td>
-                      <select
-                        name="department"
-                        value={editedEmployee.department}
-                        onChange={handleChange}
+                      <button className="update-btn" onClick={handleUpdate}>
+                        Save
+                      </button>
+                      <button
+                        className="update-btn cancel-btn"
+                        onClick={() => setEditMode(null)}
                       >
-                        <option value="">--Select--</option>
-                        <option value="HR">HR</option>
-                        <option value="Finance">Finance</option>
-                        <option value="Engineering">Engineering</option>
-                      </select>
-                    </td>
-                    <td>
-                      <input
-                        type="email"
-                        name="email"
-                        value={editedEmployee.email}
-                        onChange={handleChange}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="mobileNo"
-                        value={editedEmployee.mobileNo}
-                        onChange={handleChange}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="country"
-                        value={editedEmployee.country}
-                        onChange={handleChange}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="state"
-                        value={editedEmployee.state}
-                        onChange={handleChange}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="city"
-                        value={editedEmployee.city}
-                        onChange={handleChange}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="date"
-                        name="dob"
-                        value={editedEmployee.dob}
-                        onChange={handleChange}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="date"
-                        name="dateOfJoining"
-                        value={editedEmployee.dateOfJoining}
-                        onChange={handleChange}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="salary"
-                        value={editedEmployee.salary}
-                        onChange={handleChange}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="designation"
-                        value={editedEmployee.designation}
-                        onChange={handleChange}
-                      />
-                    </td>
-                    <td>
-                      <button className="update-btn" onClick={handleUpdate}>Save</button>
-                      <button className="update-btn" onClick={() => setEditMode(null)}>Cancel</button>
+                        Cancel
+                      </button>
                     </td>
                   </>
                 ) : (
@@ -217,8 +138,18 @@ function EmployeeTable({ deleteEmployee, updateEmployee }) {
                     <td>{employee.salary}</td>
                     <td>{employee.designation}</td>
                     <td>
-                      <button className="update-btn" onClick={() => handleEdit(employee)}>Edit</button>
-                      <button className="delete-btn" onClick={() => deleteEmployee(employee._id)}>Delete</button>
+                      <button
+                        className="edit-btn"
+                        onClick={() => handleEdit(employee)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="delete-btn"
+                        onClick={() => deleteEmployee(employee._id)}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </>
                 )}

@@ -54,7 +54,7 @@ function Signup() {
           </button>
         </form>
         <p className="linkContainer">
-          Already have an account? <a href="/login" className="link">Login</a>
+          Already have an account? <a href="/" className="link">Login</a>
         </p>
       </div>
     </div>

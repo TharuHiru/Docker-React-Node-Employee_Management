@@ -3,13 +3,24 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/EmployeeTable.css';
 
-function EmployeeTable({ deleteEmployee }) {
+function EmployeeTable() {
   const navigate = useNavigate();
   const [editMode, setEditMode] = useState(null);
   const [editedEmployee, setEditedEmployee] = useState({});
   const [employees, setEmployees] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
+
+  const deleteEmployee = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/employees/${id}`);
+      setEmployees((prev) => prev.filter((employee) => employee._id !== id));
+    } catch (error) {
+      console.error(error);
+      alert('Could not delete the employee. Please try again.');
+    }
+  };
+  
 
   // Fetch employee data on component mount
   useEffect(() => {

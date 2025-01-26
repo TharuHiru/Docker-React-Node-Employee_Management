@@ -175,12 +175,7 @@ function EmployeeTable() {
                   {editMode === employee._id ? (
                     <>
                     <td>
-                        <input
-                          type="text"
-                          name="id"
-                          value={editedEmployee.empId|| ''}
-                          onChange={handleChange}
-                        />
+                        <span>{editedEmployee.empId}</span>
                       </td>
                     <td>
                         <input

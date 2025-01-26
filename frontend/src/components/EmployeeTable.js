@@ -141,9 +141,6 @@ function EmployeeTable() {
                 <th>Department</th>
                 <th>Email</th>
                 <th>Mobile No</th>
-                <th>Country</th>
-                <th>State</th>
-                <th>City</th>
                 <th>DOB</th>
                 <th>Date of Joining</th>
                 <th>Salary</th>
@@ -187,9 +184,6 @@ function EmployeeTable() {
                       <td>{employee.department}</td>
                       <td>{employee.email}</td>
                       <td>{employee.mobileNo}</td>
-                      <td>{employee.country}</td>
-                      <td>{employee.state}</td>
-                      <td>{employee.city}</td>
                       <td>{employee.dob}</td>
                       <td>{employee.dateOfJoining}</td>
                       <td>{employee.salary}</td>

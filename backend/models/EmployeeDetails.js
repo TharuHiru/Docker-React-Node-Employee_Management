@@ -7,9 +7,6 @@ const employeeschema = new mongoose.Schema({
   department: { type: String },
   email: { type: String, required: true, unique: true },
   mobileNo: { type: String },
-  country: { type: String },
-  state: { type: String },
-  city: { type: String },
   dob: { type: Date },
   dateOfJoining: { type: Date },
   photo: { type: String }, // Store file path or URL

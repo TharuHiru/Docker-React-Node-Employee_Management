@@ -11,9 +11,6 @@ function EmployeeForm({ addEmployee }) {
     department: "",
     email: "",
     mobileNo: "",
-    country: "",
-    state: "",
-    city: "",
     dob: "",
     dateOfJoining: "",
     photo: null,
@@ -59,9 +56,6 @@ function EmployeeForm({ addEmployee }) {
           department: "",
           email: "",
           mobileNo: "",
-          country: "",
-          state: "",
-          city: "",
           dob: "",
           dateOfJoining: "",
           photo: null,
@@ -128,11 +122,11 @@ function EmployeeForm({ addEmployee }) {
           <option value="Engineering">Engineering</option>
         </select>
 
-        <label htmlFor="email">Email ID:</label>
+        <label htmlFor="email">Email:</label>
         <input
           type="email"
           name="email"
-          placeholder="Enter Email ID"
+          placeholder="Enter Email"
           value={employee.email}
           onChange={handleChange}
           required
@@ -144,33 +138,6 @@ function EmployeeForm({ addEmployee }) {
           name="mobileNo"
           placeholder="Enter Mobile Number"
           value={employee.mobileNo}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="country">Country:</label>
-        <input
-          type="text"
-          name="country"
-          placeholder="Enter Country"
-          value={employee.country}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="state">State:</label>
-        <input
-          type="text"
-          name="state"
-          placeholder="Enter State"
-          value={employee.state}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="city">City:</label>
-        <input
-          type="text"
-          name="city"
-          placeholder="Enter City"
-          value={employee.city}
           onChange={handleChange}
         />
 

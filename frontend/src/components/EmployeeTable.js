@@ -74,8 +74,8 @@ function EmployeeTable() {
       department: employee.department || '',
       email: employee.email || '',
       mobileNo: employee.mobileNo || '',
-      dob: employee.dob || '',
-      dateOfJoining: employee.dateOfJoining || '',
+      dob: employee.dob ? new Date(employee.dob).toISOString().split('T')[0] : '', // Handle date formatting
+      dateOfJoining: employee.dateOfJoining ? new Date(employee.dateOfJoining).toISOString().split('T')[0] : '',
       salary: employee.salary || '',
       designation: employee.designation || '',
     };
@@ -170,144 +170,149 @@ function EmployeeTable() {
               </tr>
             </thead>
             <tbody>
-              {filteredEmployees.map((employee) => (
-                <tr key={employee._id}>
-                  {editMode === employee._id ? (
-                    <>
-                    <td>
-                        <span>{editedEmployee.empId}</span>
-                      </td>
-                    <td>
-                        <input
-                          type="text"
-                          name="firstName"
-                          value={editedEmployee.firstName || ''}
-                          onChange={handleChange}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          name="lastName"
-                          value={editedEmployee.lastName || ''}
-                          onChange={handleChange}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          name="address"
-                          value={editedEmployee.address || ''}
-                          onChange={handleChange}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          name="department"
-                          value={editedEmployee.department || ''}
-                          onChange={handleChange}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="email"
-                          name="email"
-                          value={editedEmployee.email || ''}
-                          onChange={handleChange}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          name="mobileNo"
-                          value={editedEmployee.mobileNo || ''}
-                          onChange={handleChange}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="date"
-                          name="dob"
-                          value={editedEmployee.dob || ''}
-                          onChange={handleChange}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="date"
-                          name="dateOfJoining"
-                          value={editedEmployee.dateOfJoining || ''}
-                          onChange={handleChange}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          name="salary"
-                          value={editedEmployee.salary || ''}
-                          onChange={handleChange}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          name="designation"
-                          value={editedEmployee.designation || ''}
-                          onChange={handleChange}
-                        />
-                      </td>
-                      <td>
-                        <button className="update-btn" onClick={handleUpdate}>
-                          Save
-                        </button>
-                        <button
-                          className="update-btn cancel-btn"
-                          onClick={() => setEditMode(null)}
-                        >
-                          Cancel
-                        </button>
-                      </td>
-                    </>
-                  ) : (
-                    <>
-                      <td>{employee.empId}</td>
-                      <td>{employee.firstName}</td>
-                      <td>{employee.lastName}</td>
-                      <td>{employee.address}</td>
-                      <td>{employee.department}</td>
-                      <td>{employee.email}</td>
-                      <td>{employee.mobileNo}</td>
-                      <td>{employee.dob}</td>
-                      <td>{employee.dateOfJoining}</td>
-                      <td>{employee.salary}</td>
-                      <td>{employee.designation}</td>
-                      <td>
-                      <img
-                      src={`http://localhost:5000/uploads/${employee.photo}`}
-                      alt="Profile"
-                      className="profile-photo"
-                      />
-                      </td>
-                      <td>
-                        <button
-                          className="edit-btn"
-                          onClick={() => handleEdit(employee)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="delete-btn"
-                          onClick={() => deleteEmployee(employee._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </>
-                  )}
-                </tr>
-              ))}
-            </tbody>
+  {filteredEmployees.map((employee) => {
+    const isEditing = editMode === employee._id;
+
+    return (
+      <tr key={employee._id}>
+        {isEditing ? (
+          <>
+            <td>
+              <span>{editedEmployee.empId}</span>
+            </td>
+            <td>
+              <input
+                type="text"
+                name="firstName"
+                value={editedEmployee.firstName || ''}
+                onChange={handleChange}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                name="lastName"
+                value={editedEmployee.lastName || ''}
+                onChange={handleChange}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                name="address"
+                value={editedEmployee.address || ''}
+                onChange={handleChange}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                name="department"
+                value={editedEmployee.department || ''}
+                onChange={handleChange}
+              />
+            </td>
+            <td>
+              <input
+                type="email"
+                name="email"
+                value={editedEmployee.email || ''}
+                onChange={handleChange}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                name="mobileNo"
+                value={editedEmployee.mobileNo || ''}
+                onChange={handleChange}
+              />
+            </td>
+            <td>
+              <input
+                type="date"
+                name="dob"
+                value={editedEmployee.dob || ''}
+                onChange={handleChange}
+              />
+            </td>
+            <td>
+              <input
+                type="date"
+                name="dateOfJoining"
+                value={editedEmployee.dateOfJoining || ''}
+                onChange={handleChange}
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                name="salary"
+                value={editedEmployee.salary || ''}
+                onChange={handleChange}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                name="designation"
+                value={editedEmployee.designation || ''}
+                onChange={handleChange}
+              />
+            </td>
+            <td>
+              <button className="update-btn" onClick={handleUpdate}>
+                Save
+              </button>
+              <button
+                className="update-btn cancel-btn"
+                onClick={() => setEditMode(null)}
+              >
+                Cancel
+              </button>
+            </td>
+          </>
+        ) : (
+          <>
+            <td>{employee.empId}</td>
+            <td>{employee.firstName}</td>
+            <td>{employee.lastName}</td>
+            <td>{employee.address}</td>
+            <td>{employee.department}</td>
+            <td>{employee.email}</td>
+            <td>{employee.mobileNo}</td>
+            <td>{employee.dob}</td>
+            <td>{employee.dateOfJoining}</td>
+            <td>{employee.salary}</td>
+            <td>{employee.designation}</td>
+            <td>
+              <img
+                src={`http://localhost:5000/uploads/${employee.photo}`}
+                alt="Profile"
+                className="profile-photo"
+              />
+            </td>
+            <td>
+              <button
+                className="edit-btn"
+                onClick={() => handleEdit(employee)}
+              >
+                Edit
+              </button>
+              <button
+                className="delete-btn"
+                onClick={() => deleteEmployee(employee._id)}
+              >
+                Delete
+              </button>
+            </td>
+          </>
+        )}
+      </tr>
+    );
+  })}
+</tbody>
+
           </table>
         )}
       </div>

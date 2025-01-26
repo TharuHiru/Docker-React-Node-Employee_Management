@@ -87,7 +87,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     try {
-      const { empId, firstName, lastName, department, email, mobileNo, country, state, city, dob, dateOfJoining, address, salary, designation } = req.body;
+      const { empId, firstName, lastName, department, email, mobileNo, dob, dateOfJoining, address, salary, designation } = req.body;
       const photo = req.file ? req.file.path : null;
       const newEmployeeDetails = new EmployeeDetails({
         empId,
@@ -96,9 +96,6 @@ router.post(
         department,
         email,
         mobileNo,
-        country,
-        state,
-        city,
         dob,
         dateOfJoining,
         photo,

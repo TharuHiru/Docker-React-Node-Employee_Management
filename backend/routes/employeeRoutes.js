@@ -7,22 +7,33 @@ const EmployeeDetails = require('../models/EmployeeDetails');
 const router = express.Router();
 
 // Signup route
-router.post('/signup', async (req, res) => {
-  try {
-    const { email, password } = req.body;
+const { body, validationResult } = require('express-validator');
 
-    // Hash the password before saving
-    const saltRounds = 10; // Number of salt rounds
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    // Create the employee with the hashed password
-    const newEmployee = new Employee({ email, password: hashedPassword });
-    await newEmployee.save();
-    res.status(201).json(newEmployee);
-  } catch (err) {
-    res.status(400).json({ message: 'Error signing up', error: err });
+// Signup route with input validation
+router.post(
+  '/signup',
+  [
+    body('email').isEmail().withMessage('Invalid email format'),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      const { email, password } = req.body;
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      const newEmployee = new Employee({ email, password: hashedPassword });
+      await newEmployee.save();
+      res.status(201).json(newEmployee);
+    } catch (err) {
+      res.status(400).json({ message: 'Error signing up', error: err });
+    }
   }
-});
+);
+
 
 // Login route
 router.post('/login', async (req, res) => {
@@ -61,35 +72,49 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Add a new employee details
-router.post('/employees', upload.single('photo'), async (req, res) => {
-  try {
-    console.log('Request body:', req.body); // Log the request body for debugging
-    const { empId, firstName, lastName, department, email, mobileNo, country, state, city, dob, dateOfJoining, address, salary, designation } = req.body;
-    const photo = req.file ? req.file.path : null;
-    const newEmployeeDetails = new EmployeeDetails({
-      empId,
-      firstName,
-      lastName,
-      department,
-      email,
-      mobileNo,
-      country,
-      state,
-      city,
-      dob,
-      dateOfJoining,
-      photo,
-      address,
-      salary,
-      designation,
-    });
-    await newEmployeeDetails.save();
-    res.status(201).json(newEmployeeDetails);
-  } catch (err) {
-    console.error('Error adding employee:', err); // Log the error for debugging
-    res.status(400).json({ message: 'Error adding employee', error: err });
+router.post(
+  '/employees',
+  upload.single('photo'),
+  [
+    body('empId').isString().notEmpty().withMessage('Employee ID is required'),
+    body('email').isEmail().withMessage('Invalid email format'),
+    body('firstName').isString().notEmpty().withMessage('First name is required'),
+    body('lastName').isString().notEmpty().withMessage('Last name is required'),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      const { empId, firstName, lastName, department, email, mobileNo, country, state, city, dob, dateOfJoining, address, salary, designation } = req.body;
+      const photo = req.file ? req.file.path : null;
+      const newEmployeeDetails = new EmployeeDetails({
+        empId,
+        firstName,
+        lastName,
+        department,
+        email,
+        mobileNo,
+        country,
+        state,
+        city,
+        dob,
+        dateOfJoining,
+        photo,
+        address,
+        salary,
+        designation,
+      });
+      await newEmployeeDetails.save();
+      res.status(201).json(newEmployeeDetails);
+    } catch (err) {
+      console.error('Error adding employee:', err);
+      res.status(400).json({ message: 'Error adding employee', error: err });
+    }
   }
-});
+);
+
 
 // Get all employees details
 router.get('/employees', async (req, res) => {

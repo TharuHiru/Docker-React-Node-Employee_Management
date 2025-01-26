@@ -138,6 +138,7 @@ function EmployeeTable() {
                 <th>Emp ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
+                <th>Address</th>
                 <th>Department</th>
                 <th>Email</th>
                 <th>Mobile No</th>
@@ -145,6 +146,7 @@ function EmployeeTable() {
                 <th>Date of Joining</th>
                 <th>Salary</th>
                 <th>Designation</th>
+                <th>Profile Photo</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -181,6 +183,7 @@ function EmployeeTable() {
                       <td>{employee.empId}</td>
                       <td>{employee.firstName}</td>
                       <td>{employee.lastName}</td>
+                      <td>{employee.address}</td>
                       <td>{employee.department}</td>
                       <td>{employee.email}</td>
                       <td>{employee.mobileNo}</td>
@@ -188,6 +191,13 @@ function EmployeeTable() {
                       <td>{employee.dateOfJoining}</td>
                       <td>{employee.salary}</td>
                       <td>{employee.designation}</td>
+                      <td>
+                      <img
+                      src={`http://localhost:5000/uploads/${employee.photo}`}
+                      alt="Profile"
+                      className="profile-photo"
+                      />
+                      </td>
                       <td>
                         <button
                           className="edit-btn"

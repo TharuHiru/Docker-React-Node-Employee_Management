@@ -1,17 +1,21 @@
-const express = require('express');
-const cors = require('cors');
+const express = require('express'); // Framework for web servers and API s
+const cors = require('cors'); // Middleware for enabling CORS to communicate between frontend and backend
 const mongoose = require('mongoose');
-const fs = require('fs');
-require('dotenv').config();
-const employeeRoutes = require('./routes/employeeRoutes');
+const fs = require('fs'); // work with file systems
+require('dotenv').config(); // load environment variables from a .env file
+const employeeRoutes = require('./routes/employeeRoutes'); // contailn URL s to API requests
 const path = require('path');
+const xssClean = require('xss-clean');
 
 const app = express();
+
+// Apply XSS clean middleware
+app.use(xssClean());
 
 // Validate required environment variables
 if (!process.env.MONGODB_URI) {
   console.error('MONGODB_URI is not set in the environment variables.');
-  process.exit(1);
+  process.exit(1); // Exit the process if MONGODB_URI is not set
 }
 
 // Middleware to parse incoming JSON requests
@@ -80,3 +84,8 @@ server.on('error', (err) => {
     console.error(err);
   }
 });
+
+//Checks if the port is already in use. If so:
+//Logs a message.
+//Waits 1 second.
+//Starts the server on the next available port (PORT + 1).

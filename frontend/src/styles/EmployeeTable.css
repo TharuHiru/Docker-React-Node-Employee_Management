@@ -15,7 +15,7 @@ body {
     overflow-x: auto; 
 }
 
-.employee-table-container h2 {
+.employee-table-container h1 {
     text-align: center;
     margin-bottom: 30px;
     color: #ffffff;
@@ -120,24 +120,58 @@ body {
 
 .employee-search-filter {
     display: flex;
-    width: 500px;
-    justify-content: center; /* Centers content horizontally */
-    align-items: center; /* Centers content vertically */
-    gap: 10px;
-    margin-bottom: 20px;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.6);
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: #f8f9fa; /* Light background for contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
   .search-input {
-    padding: 8px;
-    width: 350px;
+    flex: 1;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #ced4da; /* Light border */
+    border-radius: 30px; /* Rounded look */
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .search-input:focus {
+    border-color: #007bff; /* Blue highlight on focus */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
   }
   
   .department-select {
-    padding: 8px;
-    width: 200px;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #ced4da; /* Light border */
+    border-radius: 30px; /* Rounded look */
+    background-color: #ffffff; /* White background */
+    color: #495057; /* Text color */
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    appearance: none; /* Remove default arrow for custom styles */
   }
+  
+  .department-select:focus {
+    border-color: #28a745; /* Green highlight on focus */
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
+  }
+  
+  .department-select::-ms-expand {
+    display: none; /* Remove default arrow in IE */
+  }
+  
+  .department-select::after {
+    content: "▼"; /* Custom dropdown arrow */
+    position: absolute;
+    right: 1rem;
+    pointer-events: none;
+  }
+  
 
 /* Responsive Design */
 @media (max-width: 768px) {

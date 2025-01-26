@@ -90,7 +90,7 @@ function EmployeeTable({ deleteEmployee }) {
       >
         <span>&larr;</span> Back
       </button>
-      <h2 style={{ color: 'white' }}>Employee List</h2>
+      <h1 style={{ color: 'white' }}>Employee List</h1>
 
       {/* Search and Filter Section */}
       <div className="employee-search-filter">

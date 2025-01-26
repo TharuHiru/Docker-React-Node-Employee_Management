@@ -14,7 +14,7 @@ function Signup() {
       const response = await axios.post('http://localhost:5000/api/signup', { email, password });
       if (response.status === 201) {
         alert('Signup Successful!');
-        navigate('/login'); // Redirect to the login page
+        navigate('/'); // Redirect to the login page
       }
     } catch (error) {
       alert('Error signing up. Please try again.');

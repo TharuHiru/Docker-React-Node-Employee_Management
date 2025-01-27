@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/employeeForm.css';
 
+// form data for the new employee
 function EmployeeForm({ addEmployee }) {
   const [employee, setEmployee] = useState({
     empId: "",
@@ -21,13 +22,24 @@ function EmployeeForm({ addEmployee }) {
 
   const navigate = useNavigate(); // Navigation hook
 
+  //handle changes into input fields
   const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
-    setEmployee({ ...employee, [name]: type === "file" ? files[0] : value });
-  };
+    const { name, value, type, files } = e.target; // the specific input field
 
+    // if it is a file input, get the first file or get the value
+    let updatedValue;
+    if (type === "file") {
+      updatedValue = files[0];
+    } else {
+      updatedValue = value;
+    }
+    setEmployee({ ...employee, [name]: updatedValue });
+    };
+
+  //handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
+
     // Basic validation
     if (!employee.empId || !employee.firstName || !employee.email) {
       alert("Employee ID, First Name, and Email are required!");
@@ -35,21 +47,24 @@ function EmployeeForm({ addEmployee }) {
     }
 
     try {
-      const formData = new FormData();
+      const formData = new FormData(); // Create a new FormData object
       for (const key in employee) {
-        formData.append(key, employee[key]);
+        formData.append(key, employee[key]); // Append all the fields
       }
 
-      const response = await axios.post('http://localhost:5000/api/employees', formData, {
+      //send form data into backend
+      const response = await axios.post('http://localhost:5000/api/employees', formData, { //API endpoint where the data is send
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'multipart/form-data', //Tells the server to expect file and form data.
         },
       });
 
+      // if success then alert and add employee
       if (response.status === 201) {
         alert('Employee added successfully');
         addEmployee(response.data); // Pass to parent component
         setEmployee({
+          // reset the form
           empId: "",
           firstName: "",
           lastName: "",
@@ -63,9 +78,10 @@ function EmployeeForm({ addEmployee }) {
           salary: "",
           designation: "",
         });
-        // Navigate to dashboard or another page if needed
+        // Navigate to dashboard 
         navigate('/dashboard');
       }
+      // handle any error
     } catch (error) {
       console.error('Error adding employee:', error);
       alert('Error adding employee. Please try again.');
@@ -73,9 +89,10 @@ function EmployeeForm({ addEmployee }) {
   };
 
   const handleBackClick = () => {
-    navigate('/dashboard'); // or any other route you want to navigate to
+    navigate('/dashboard'); // Navigate to dashboard
   };
 
+  // HTML structure for the form
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit} className="employee-form">

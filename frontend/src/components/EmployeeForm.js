@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/employeeForm.css';
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // form data for the new employee
 function EmployeeForm({ addEmployee }) {
   const [employee, setEmployee] = useState({
@@ -28,24 +31,81 @@ function EmployeeForm({ addEmployee }) {
 
     // if it is a file input, get the first file or get the value
     let updatedValue;
-    if (type === "file") {
-      updatedValue = files[0];
+  
+  if (type === "file") {
+    updatedValue = files[0];
+  } else {
+    // If it's a number field, convert the value to a number
+    if (name === "salary" || name === "mobileNo") {
+      updatedValue = value ? parseFloat(value) : "";
     } else {
       updatedValue = value;
     }
-    setEmployee({ ...employee, [name]: updatedValue });
-    };
+  }
+
+  setEmployee({ ...employee, [name]: updatedValue });
+};
 
   //handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
 
     // Basic validation
+    const nameRegex = /^[a-zA-Z]+$/;
+    const mobileRegex = /^[0-9]+$/;
+    const salaryRegex = /^[0-9]+(\.[0-9]{1,2})?$/;
+    const designationRegex = /^[A-Za-z0-9\s]+$/;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+
+    const dob = new Date(employee.dob);
+    const dateOfJoining = new Date(employee.dateOfJoining);
+
     if (!employee.empId || !employee.firstName || !employee.email) {
-      alert("Employee ID, First Name, and Email are required!");
+      toast.error("Employee ID, First Name, and Email are required!");
+      return;
+    } 
+    else if (employee.empId.length < 5) {
+      toast.error("Employee ID must be at least 5 characters long!");
       return;
     }
-
+    else if (!nameRegex.test(employee.firstName)) {
+      toast.error("First Name must contain only valid characters!");
+      return;
+    }
+    else if (!nameRegex.test(employee.lastName)) {
+      toast.error("Last Name must contain only valid characters!");
+      return;
+    }
+    else if (!emailRegex.test(employee.email)){
+      toast.error("please insert valid email address")
+      return;
+    }
+    else if (employee.mobileNo.length < 10) {
+      toast.error("Please enter a valid Mobile Number!");
+      return;
+    }
+    else if (!mobileRegex.test(employee.mobileNo)) {
+      toast.error("Please enter a valid Mobile Number!");
+      return;
+    } 
+    else if (dob >= new Date()) {
+      toast.error("Date of Birth must be a past date!");
+      return;
+    }
+    else if (dateOfJoining >= new Date()) {
+      toast.error("Date of Joining must be a past date!");
+      return;
+    }
+    else if (!salaryRegex.test(employee.salary)) {
+      toast.error("Salary must be a valid number with up to two decimal places!");
+      return;
+    }
+    else if (employee.designation && !designationRegex.test(employee.designation)) {
+      toast.error("Designation should not contain special characters!");
+      return;
+    }
+    
     try {
       const formData = new FormData(); // Create a new FormData object
       for (const key in employee) {
@@ -61,7 +121,7 @@ function EmployeeForm({ addEmployee }) {
 
       // if success then alert and add employee
       if (response.status === 201) {
-        alert('Employee added successfully');
+        toast.success('Employee added successfully');
         addEmployee(response.data); // Pass to parent component
         setEmployee({
           // reset the form
@@ -84,7 +144,7 @@ function EmployeeForm({ addEmployee }) {
       // handle any error
     } catch (error) {
       console.error('Error adding employee:', error);
-      alert('Error adding employee. Please try again.');
+      toast.error('Error adding employee. Please try again.');
     }
   };
 
@@ -175,7 +235,11 @@ function EmployeeForm({ addEmployee }) {
         />
 
         <label htmlFor="photo">Photo:</label>
-        <input type="file" name="photo" onChange={handleChange} />
+        <input 
+          type="file" 
+          name="photo" 
+          accept="image/png, image/jpeg, image/jpg"
+          onChange={handleChange} />
 
         <label htmlFor="address">Address:</label>
         <textarea

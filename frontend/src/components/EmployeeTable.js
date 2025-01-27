@@ -5,6 +5,7 @@ import '../styles/EmployeeTable.css';
 import { Helmet } from "react-helmet";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
 
 //functional component employee table
 function EmployeeTable() {
@@ -18,16 +19,29 @@ function EmployeeTable() {
 
   // delete an employee from the given ID
   const deleteEmployee = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/employees/${id}`);
-      setEmployees((prev) => prev.filter((employee) => employee._id !== id));
-    } catch (error) {
-      console.error(error);
-      alert('Could not delete the employee. Please try again.');
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to undo this action!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`http://localhost:5000/api/employees/${id}`);
+          setEmployees((prev) => prev.filter((employee) => employee._id !== id));
+
+          // Show SweetAlert success dialog
+          Swal.fire('Deleted!', 'The employee has been deleted.', 'success');
+        } catch (error) {
+          console.error(error);
+          toast.error('Could not delete the employee. Please try again.');
+        }
+      }
+    });
   };
   
-
   // Fetch employee data on component mount
   useEffect(() => {
     const fetchEmployees = async () => {

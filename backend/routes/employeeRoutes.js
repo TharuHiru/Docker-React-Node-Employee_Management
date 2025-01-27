@@ -33,7 +33,7 @@ router.post(
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       const newEmployee = new Employee({ email, password: hashedPassword });
-      
+
       await newEmployee.save();
       res.status(201).json(newEmployee);
     } catch (err) {
@@ -79,6 +79,15 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+const empIdExists = async (empId) => {
+  try {
+    const employee = await EmployeeDetails.findOne({ empId });
+    return employee !== null; // returns true if employee exists, false otherwise
+  } catch (error) {
+    throw new Error('Error checking empId availability');
+  }
+};
+
 // Add a new employee details
 router.post(
   '/employees',
@@ -97,6 +106,11 @@ router.post(
     try {
       const { empId, firstName, lastName, department, email, mobileNo, dob, dateOfJoining, address, salary, designation } = req.body;
       const photo = req.file ? req.file.path : null;
+
+      if (empIdExists) {
+        return res.status(400).json({ message: 'Employee ID already exists.' });
+      }
+
       const newEmployeeDetails = new EmployeeDetails({
         empId,
         firstName,

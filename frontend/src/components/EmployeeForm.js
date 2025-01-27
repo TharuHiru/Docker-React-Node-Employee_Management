@@ -143,7 +143,17 @@ function EmployeeForm({ addEmployee }) {
       // handle any error
     } catch (error) {
       console.error('Error adding employee:', error);
-      toast.error('Error adding employee. Please try again.');
+      
+      // Check if error response has a specific message (Employee ID already exists)
+      if (error.response && error.response.data.message) {
+        if (error.response.data.message.includes('Employee ID already exists.')) {
+          toast.error('Employee ID already exists. Please use a different ID.');
+        } else {
+          toast.error('Error adding employee. Please try again.');
+        }
+      } else {
+        toast.error('Error adding employee. Please try again.');
+      }
     }
   };
 

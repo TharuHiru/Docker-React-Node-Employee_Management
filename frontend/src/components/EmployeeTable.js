@@ -3,6 +3,8 @@ import axios from 'axios'; // make HTTP Requests
 import { useNavigate } from 'react-router-dom'; // help to navigate to different pages
 import '../styles/EmployeeTable.css';
 import { Helmet } from "react-helmet";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 //functional component employee table
 function EmployeeTable() {
@@ -83,6 +85,38 @@ function EmployeeTable() {
     setEditMode(employee._id);
     setEditedEmployee(editableFields);
   };
+
+  //Function for input validation
+  const validateInput = (data) => {
+    const errors = [];
+  
+    if (!data.empId || data.empId.trim() === "") {
+      errors.push("Employee ID is required.");
+    }
+    else if (!data.firstName || data.firstName.trim() === "") {
+      errors.push("First Name is required.");
+    }
+    else if (!data.firstName || !/^[A-Za-z]+$/.test(data.firstName)) {
+      errors.push("First name must contain only alphabetic characters.");
+    }
+    else if (!data.lastName || !/^[A-Za-z]+$/.test(data.lastName)) {
+      errors.push("Last name must contain only alphabetic characters.");
+    }
+    else if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      errors.push("Valid Email is required.");
+    }
+    else if (!data.mobileNo || !/^\d{10}$/.test(data.mobileNo)) {
+      errors.push("Mobile Number must be 10 digits.");
+    }
+    else if (!data.salary || data.salary <= 0) {
+      errors.push("Salary must be a positive number.");
+    }
+    else if (!data.department || !["HR", "Finance", "Engineering"].includes(data.department)) {
+      errors.push("Department must be one of HR, Finance, Engineering.");
+    }
+  
+    return errors;
+  };
   
   // trigger when a use type in the input field
   const handleChange = (e) => {
@@ -91,8 +125,11 @@ function EmployeeTable() {
   };
 
   const handleUpdate = async () => { // check any required field is empty or not
-    if (!editedEmployee.empId || !editedEmployee.firstName || !editedEmployee.email) {
-      alert('Emp ID, First Name, and Email are required!');
+    const validationErrors = validateInput(editedEmployee);
+
+    //Check if there are any errors
+    if (validationErrors.length > 0) {
+      toast.error(validationErrors.join("\n"));
       return;
     }
 
@@ -234,22 +271,8 @@ function EmployeeTable() {
                             onChange={handleChange}
                           />
                         </td>
-                        <td>
-                          <input
-                            type="date"
-                            name="dob"
-                            value={editedEmployee.dob || ''}
-                            onChange={handleChange}
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="date"
-                            name="dateOfJoining"
-                            value={editedEmployee.dateOfJoining || ''}
-                            onChange={handleChange}
-                          />
-                        </td>
+                        <td>{editedEmployee.dob}</td>
+                        <td>{editedEmployee.dateOfJoining}</td>
                         <td>
                           <input
                             type="number"

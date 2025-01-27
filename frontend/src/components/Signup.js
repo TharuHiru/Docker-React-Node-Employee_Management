@@ -39,13 +39,13 @@ function Signup() { // variables to store email and password
       
     } catch (error) {
       // Handle specific error for existing email
-  if (error.response && error.response.data && error.response.data.message === 'Email already exists') {
-    toast.error('This email is already registered. Please use a different email.');
-  } else {
-    toast.error('Error signing up. Please try again.');
-  }
-  console.error('Signup error:', error); // Log the error for debugging
-    }
+        if (error.response && error.response.data && error.response.data.message === 'Email already exists') {
+          toast.error('This email is already registered. Please use a different email.');
+        } else {
+          toast.error('Error signing up. Please try again.');
+        }
+        console.error('Signup error:', error); // Log the error for debugging
+          }
   };
 
   return (

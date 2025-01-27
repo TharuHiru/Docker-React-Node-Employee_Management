@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'; //manage component state and lifecycle
+import axios from 'axios'; // make HTTP Requests
+import { useNavigate } from 'react-router-dom'; // help to navigate to different pages
 import '../styles/EmployeeTable.css';
 
 //functional component employee table
@@ -64,7 +64,7 @@ function EmployeeTable() {
     navigate(-1);
   };
 
-  //handle the edit mode of the employee
+  //handle the edit mode of the employee crete a table row with input fields
   const handleEdit = (employee) => {
     const editableFields = {
       empId: employee.empId || '',
@@ -83,26 +83,26 @@ function EmployeeTable() {
     setEditedEmployee(editableFields);
   };
   
-  
-
+  // trigger when a use type in the input field
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // get the attribute name and value of the input field
     setEditedEmployee((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleUpdate = async () => {
+  const handleUpdate = async () => { // check any required field is empty or not
     if (!editedEmployee.empId || !editedEmployee.firstName || !editedEmployee.email) {
       alert('Emp ID, First Name, and Email are required!');
       return;
     }
 
-    try {
-      const response = await axios.put(`http://localhost:5000/api/employees/${editMode}`, editedEmployee);
-      if (response.status === 200) {
+    try { // awaits means wair for servers response
+      const response = await axios.put(`http://localhost:5000/api/employees/${editMode}`, editedEmployee); // editMode has the ID of the employee being edited
+      if (response.status === 200) // if success then update the employee
+      {
         setEmployees((prev) =>
           prev.map((employee) => (employee._id === editMode ? editedEmployee : employee))
         );
-        setEditMode(null); // Exit edit mode
+        setEditMode(null); // hide the editing mode
       }
     } catch (error) {
       console.error('Error updating employee:', error);
@@ -121,7 +121,7 @@ function EmployeeTable() {
         <span>&larr;</span> Back
       </button>
       <h1 style={{ color: 'white' }}>Employee List</h1>
-
+  
       {/* Search and Filter Section */}
       <div className="employee-search-filter">
         <input
@@ -137,16 +137,19 @@ function EmployeeTable() {
           className="department-select"
         >
           <option value="">All Departments</option>
-          {Array.from(new Set(employees.map((employee) => employee.department)))
-            .sort()
-            .map((department) => (
-              <option key={department} value={department}>
-                {department}
-              </option>
-            ))}
-        </select>
-      </div>
-
+              {/* list of the departments */}
+              {[
+                "HR",
+                "Finance",
+                "Engineering",
+              ].map((department) => (
+                <option key={department} value={department}>
+                  {department}
+                </option>
+              ))}
+            </select>
+          </div>
+  
       <div className="employee-table-container">
         {filteredEmployees.length === 0 ? (
           <p>No employees found.</p>
@@ -170,154 +173,167 @@ function EmployeeTable() {
               </tr>
             </thead>
             <tbody>
-  {filteredEmployees.map((employee) => {
-    const isEditing = editMode === employee._id;
-
-    return (
-      <tr key={employee._id}>
-        {isEditing ? (
-          <>
-            <td>
-              <span>{editedEmployee.empId}</span>
-            </td>
-            <td>
-              <input
-                type="text"
-                name="firstName"
-                value={editedEmployee.firstName || ''}
-                onChange={handleChange}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                name="lastName"
-                value={editedEmployee.lastName || ''}
-                onChange={handleChange}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                name="address"
-                value={editedEmployee.address || ''}
-                onChange={handleChange}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                name="department"
-                value={editedEmployee.department || ''}
-                onChange={handleChange}
-              />
-            </td>
-            <td>
-              <input
-                type="email"
-                name="email"
-                value={editedEmployee.email || ''}
-                onChange={handleChange}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                name="mobileNo"
-                value={editedEmployee.mobileNo || ''}
-                onChange={handleChange}
-              />
-            </td>
-            <td>
-              <input
-                type="date"
-                name="dob"
-                value={editedEmployee.dob || ''}
-                onChange={handleChange}
-              />
-            </td>
-            <td>
-              <input
-                type="date"
-                name="dateOfJoining"
-                value={editedEmployee.dateOfJoining || ''}
-                onChange={handleChange}
-              />
-            </td>
-            <td>
-              <input
-                type="number"
-                name="salary"
-                value={editedEmployee.salary || ''}
-                onChange={handleChange}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                name="designation"
-                value={editedEmployee.designation || ''}
-                onChange={handleChange}
-              />
-            </td>
-            <td>
-              <button className="update-btn" onClick={handleUpdate}>
-                Save
-              </button>
-              <button
-                className="update-btn cancel-btn"
-                onClick={() => setEditMode(null)}
-              >
-                Cancel
-              </button>
-            </td>
-          </>
-        ) : (
-          <>
-            <td>{employee.empId}</td>
-            <td>{employee.firstName}</td>
-            <td>{employee.lastName}</td>
-            <td>{employee.address}</td>
-            <td>{employee.department}</td>
-            <td>{employee.email}</td>
-            <td>{employee.mobileNo}</td>
-            <td>{employee.dob}</td>
-            <td>{employee.dateOfJoining}</td>
-            <td>{employee.salary}</td>
-            <td>{employee.designation}</td>
-            <td>
-              <img
-                src={`http://localhost:5000/uploads/${employee.photo}`}
-                alt="Profile"
-                className="profile-photo"
-              />
-            </td>
-            <td>
-              <button
-                className="edit-btn"
-                onClick={() => handleEdit(employee)}
-              >
-                Edit
-              </button>
-              <button
-                className="delete-btn"
-                onClick={() => deleteEmployee(employee._id)}
-              >
-                Delete
-              </button>
-            </td>
-          </>
-        )}
-      </tr>
-    );
-  })}
-</tbody>
-
+              {filteredEmployees.map((employee) => {
+                const isEditing = editMode === employee._id;
+                  // edit mode of the table
+                return (
+                  <tr key={employee._id}>
+                    {isEditing ? (
+                      <>
+                        <td>{editedEmployee.empId}</td>
+                        <td>
+                          <input
+                            type="text"
+                            name="firstName"
+                            value={editedEmployee.firstName || ''}
+                            onChange={handleChange}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            name="lastName"
+                            value={editedEmployee.lastName || ''}
+                            onChange={handleChange}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            name="address"
+                            value={editedEmployee.address || ''}
+                            onChange={handleChange}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            name="department"
+                            value={editedEmployee.department || ''}
+                            onChange={handleChange}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="email"
+                            name="email"
+                            value={editedEmployee.email || ''}
+                            onChange={handleChange}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            name="mobileNo"
+                            value={editedEmployee.mobileNo || ''}
+                            onChange={handleChange}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="date"
+                            name="dob"
+                            value={editedEmployee.dob || ''}
+                            onChange={handleChange}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="date"
+                            name="dateOfJoining"
+                            value={editedEmployee.dateOfJoining || ''}
+                            onChange={handleChange}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            name="salary"
+                            value={editedEmployee.salary || ''}
+                            onChange={handleChange}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            name="designation"
+                            value={editedEmployee.designation || ''}
+                            onChange={handleChange}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="file"
+                            name="photo"
+                            onChange={(e) =>
+                              setEditedEmployee({
+                                ...editedEmployee,
+                                photo: e.target.files[0],
+                              })
+                            }
+                          />
+                        </td>
+                        <td>
+                          <button
+                            className="update-btn"
+                            onClick={handleUpdate}
+                          >
+                            Save
+                          </button>
+                          <button
+                            className="update-btn cancel-btn"
+                            onClick={() => setEditMode(null)}
+                          >
+                            Cancel
+                          </button>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                      {/* read view of the table */}
+                        <td>{employee.empId}</td>
+                        <td>{employee.firstName}</td>
+                        <td>{employee.lastName}</td>
+                        <td>{employee.address}</td>
+                        <td>{employee.department}</td>
+                        <td>{employee.email}</td>
+                        <td>{employee.mobileNo}</td>
+                        <td>{employee.dob}</td>
+                        <td>{employee.dateOfJoining}</td>
+                        <td>{employee.salary}</td>
+                        <td>{employee.designation}</td>
+                        <td>
+                          <img
+                            src={`http://localhost:5000/uploads/${employee.photo}`}
+                            alt="Profile"
+                            className="profile-photo"
+                          />
+                        </td>
+                        <td>
+                          <button
+                            className="edit-btn"
+                            onClick={() => handleEdit(employee)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="delete-btn"
+                            onClick={() => deleteEmployee(employee._id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </>
+                    )}
+                  </tr>
+                );
+              })}
+            </tbody>
           </table>
         )}
       </div>
     </>
   );
-}
+}  
 
-export default EmployeeTable;
+export default EmployeeTable; //export the component

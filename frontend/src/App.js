@@ -1,5 +1,7 @@
-import React, { useState } from 'react'; // import the core library
+import React, { useState } from 'react'; // Import core library
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Import routing components
+import { ToastContainer, toast } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify styles
 
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -7,16 +9,17 @@ import EmployeeForm from './components/EmployeeForm';
 import EmployeeTable from './components/EmployeeTable';
 import Dashboard from './components/Dashboard'; 
 
-// employees is the state variable to store an employee object and setEmployees is a function to update the employee state
 function App() {
   const [employees, setEmployees] = useState([]);
 
   const addEmployee = (employee) => {
     setEmployees([...employees, { ...employee, id: Date.now() }]);
+    toast.success('Employee added successfully!'); // Success toast
   };
 
   const deleteEmployee = (id) => {
     setEmployees(employees.filter((employee) => employee.id !== id));
+    toast.error('Employee deleted successfully!'); // Error toast
   };
 
   const updateEmployee = (id, updatedEmployee) => {
@@ -25,11 +28,15 @@ function App() {
         employee.id === id ? { ...employee, ...updatedEmployee } : employee
       )
     );
+    toast.info('Employee updated successfully!'); // Info toast
   };
 
   return (
     <Router>
       <div className="app">
+        {/* Toast Container */}
+        <ToastContainer position="top-right" autoClose={3000} />
+
         <Routes>
           {/* Route for the Login page */}
           <Route path="/" element={<Login />} />

@@ -155,7 +155,7 @@ function EmployeeForm({ addEmployee }) {
   return (
     <div className="form-container">
       <Helmet>
-        <title>Add Employee | MyApp</title>
+        <title>Add Employee | Employee Management System</title>
         <meta name="description" content="Form to add a new employee" />
       </Helmet>
       <form onSubmit={handleSubmit} className="employee-form">

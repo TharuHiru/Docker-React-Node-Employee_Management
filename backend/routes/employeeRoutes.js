@@ -23,9 +23,17 @@ router.post(
     }
     try {
       const { email, password } = req.body;
+
+        // Check if the email already exists in the database
+        const existingEmployee = await Employee.findOne({ email });
+        if (existingEmployee) {
+          return res.status(400).json({ message: 'Email already exists' });
+        }
+
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       const newEmployee = new Employee({ email, password: hashedPassword });
+      
       await newEmployee.save();
       res.status(201).json(newEmployee);
     } catch (err) {

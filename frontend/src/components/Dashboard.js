@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaUserPlus, FaUsers, FaSignOutAlt } from 'react-icons/fa';
 import '../styles/dashboard.css';
+import { Helmet } from "react-helmet";
 
 function Dashboard() {
   const [username, setUsername] = useState('');
@@ -21,6 +22,10 @@ return (
   //The HTML code is properly coded for proper SEO and accessibility
   <div className="container">
     <header>
+    <Helmet>
+        <title>Dashboard | Employee Management System</title>
+        <meta name="description" content="Form to add a new employee" />
+      </Helmet>
       <h1 className='heading'>Welcome to the Dashboard</h1>
       <p className='subheading'>Hello, {username}! Manage your workspace with ease.</p>
     </header>

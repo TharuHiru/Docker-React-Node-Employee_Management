@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'; //manage component state and
 import axios from 'axios'; // make HTTP Requests
 import { useNavigate } from 'react-router-dom'; // help to navigate to different pages
 import '../styles/EmployeeTable.css';
+import { Helmet } from "react-helmet";
 
 //functional component employee table
 function EmployeeTable() {
@@ -112,6 +113,10 @@ function EmployeeTable() {
 
   return (
     <>
+      <Helmet>
+        <title>View Employee | Employee Management System</title>
+        <meta name="description" content="Form to add a new employee" />
+      </Helmet>
       <button
         type="button"
         onClick={handleBackClick}

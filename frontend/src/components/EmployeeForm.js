@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/employeeForm.css';
-
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Helmet } from "react-helmet";
 
 // form data for the new employee
 function EmployeeForm({ addEmployee }) {
@@ -32,19 +32,19 @@ function EmployeeForm({ addEmployee }) {
     // if it is a file input, get the first file or get the value
     let updatedValue;
   
-  if (type === "file") {
-    updatedValue = files[0];
-  } else {
-    // If it's a number field, convert the value to a number
-    if (name === "salary" || name === "mobileNo") {
-      updatedValue = value ? parseFloat(value) : "";
+    if (type === "file") {
+      updatedValue = files[0];
     } else {
-      updatedValue = value;
+      // If it's a number field, convert the value to a number
+      if (name === "salary" || name === "mobileNo") {
+        updatedValue = value ? parseFloat(value) : "";
+      } else {
+        updatedValue = value;
+      }
     }
-  }
 
-  setEmployee({ ...employee, [name]: updatedValue });
-};
+    setEmployee({ ...employee, [name]: updatedValue });
+  };
 
   //handle form submission
   const handleSubmit = async (e) => {
@@ -56,7 +56,6 @@ function EmployeeForm({ addEmployee }) {
     const salaryRegex = /^[0-9]+(\.[0-9]{1,2})?$/;
     const designationRegex = /^[A-Za-z0-9\s]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-
 
     const dob = new Date(employee.dob);
     const dateOfJoining = new Date(employee.dateOfJoining);
@@ -155,12 +154,15 @@ function EmployeeForm({ addEmployee }) {
   // HTML structure for the form
   return (
     <div className="form-container">
+      <Helmet>
+        <title>Add Employee | MyApp</title>
+        <meta name="description" content="Form to add a new employee" />
+      </Helmet>
       <form onSubmit={handleSubmit} className="employee-form">
-      <button type="button" onClick={handleBackClick} className="back-btn">
-      <span>&larr;</span> Back
-      </button>
-      <h1>Add Employee</h1>
-        
+        <button type="button" onClick={handleBackClick} className="back-btn">
+          <span>&larr;</span> Back
+        </button>
+        <h1>Add Employee</h1>
 
         <label htmlFor="empId">Employee ID:</label>
         <input
@@ -268,8 +270,6 @@ function EmployeeForm({ addEmployee }) {
         />
 
         <button type="submit" className="submit-btn">Submit</button>
-
-        
       </form>
     </div>
   );

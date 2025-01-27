@@ -12,33 +12,38 @@ function Dashboard() {
     setUsername(storedUsername);
   }, []);
 
-  const handleLogout = () => {
+  function handleLogout() {
     localStorage.clear();
     navigate('/');
-  };
+  }
 
-  return (
-    <div className="container">
-  <h1 className="heading">Welcome to the Dashboard</h1>
-  <p className="subheading">Hello, {username}! Manage your workspace with ease.</p>
-
-  <div className="card-container">
-    <div className="card" onClick={() => navigate('/employee-form')}>
-      <FaUserPlus className="card-icon" />
-      <p className="card-text">Add Employee</p>
-    </div>
-    <div className="card" onClick={() => navigate('/employee-table')}>
-      <FaUsers className="card-icon" />
-      <p className="card-text">View Employee</p>
-    </div>
+return (
+  //The HTML code is properly coded for proper SEO and accessibility
+  <div className="container">
+    <header>
+      <h1 className='heading'>Welcome to the Dashboard</h1>
+      <p className='subheading'>Hello, {username}! Manage your workspace with ease.</p>
+    </header>
+    <main>
+      <section>
+        <div className="card-container">
+          <div className="card" onClick={() => navigate('/employee-form')} role="button" aria-label="Add an employee">
+            <FaUserPlus className="card-icon" />
+            <p className="card-text">Add Employee</p>
+          </div>
+          <div className="card" onClick={() => navigate('/employee-table')} role="button" aria-label="View employee list">
+            <FaUsers className="card-icon" />
+            <p className="card-text">View Employee</p>
+          </div>
+        </div>
+      </section>
+      <button className="button" onClick={handleLogout} aria-label="Logout">
+        <FaSignOutAlt style={{ marginRight: '0.5rem' }} />
+        Logout
+      </button>
+    </main>
   </div>
-
-  <button className="button" onClick={handleLogout}>
-    <FaSignOutAlt style={{ marginRight: '0.5rem' }} />
-    Logout
-  </button>
-</div>
-  );
+);
 }
 
 export default Dashboard;

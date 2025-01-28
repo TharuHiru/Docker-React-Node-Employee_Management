@@ -1,9 +1,9 @@
-const express = require('express'); // Framework for web servers and API s
+const express = require('express'); // Framework for web servers and APIs
 const cors = require('cors'); // Middleware for enabling CORS to communicate between frontend and backend
 const mongoose = require('mongoose');
-const fs = require('fs'); // work with file systems
-require('dotenv').config(); // load environment variables from a .env file
-const employeeRoutes = require('./routes/employeeRoutes'); // contailn URL s to API requests
+const fs = require('fs'); // Work with file systems
+require('dotenv').config(); // Load environment variables from a .env file
+const employeeRoutes = require('./routes/employeeRoutes'); // Contains URLs to API requests
 const path = require('path');
 const xssClean = require('xss-clean');
 
@@ -53,6 +53,11 @@ mongoose
 // Use the employee routes
 app.use('/api', employeeRoutes);
 
+// Health check route
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'Server is running successfully!' });
+});
+
 // General error handling middleware for unknown routes
 app.use((req, res, next) => {
   res.status(404).json({ error: 'Route not found' });
@@ -84,8 +89,3 @@ server.on('error', (err) => {
     console.error(err);
   }
 });
-
-//Checks if the port is already in use. If so:
-//Logs a message.
-//Waits 1 second.
-//Starts the server on the next available port (PORT + 1).

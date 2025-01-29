@@ -17,7 +17,6 @@ function EmployeeForm({ addEmployee }) {
     mobileNo: "",
     dob: "",
     dateOfJoining: "",
-    photo: null,
     address: "",
     salary: "",
     designation: "",
@@ -27,32 +26,26 @@ function EmployeeForm({ addEmployee }) {
 
   //handle changes into input fields
   const handleChange = (e) => {
-    const { name, value, type, files } = e.target; // the specific input field
-
-    // if it is a file input, get the first file or get the value
-    let updatedValue;
+    const { name, value } = e.target; // the specific input field
   
-    if (type === "file") {
-      updatedValue = files[0];
-    } else {
-      // If it's a number field, convert the value to a number
+      let updatedValue;
+
+      // If it's a number field (like salary or mobileNo), convert the value to a number
       if (name === "salary" || name === "mobileNo") {
         updatedValue = value ? parseFloat(value) : "";
       } else {
         updatedValue = value;
       }
-    }
-
-    setEmployee({ ...employee, [name]: updatedValue });
-  };
+        setEmployee({ ...employee, [name]: updatedValue });
+      };
 
   //handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
 
-    // Basic validation
+    // Basic validations of the form
     const nameRegex = /^[a-zA-Z]+$/;
-    const mobileRegex = /^[0-9]+$/;
+    const mobileRegex = /^\d{9}$/;
     const salaryRegex = /^[0-9]+(\.[0-9]{1,2})?$/;
     const designationRegex = /^[A-Za-z0-9\s]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -78,10 +71,6 @@ function EmployeeForm({ addEmployee }) {
     }
     else if (!emailRegex.test(employee.email)){
       toast.error("please insert valid email address")
-      return;
-    }
-    else if (employee.mobileNo.length < 10) {
-      toast.error("Please enter a valid Mobile Number!");
       return;
     }
     else if (!mobileRegex.test(employee.mobileNo)) {
@@ -112,11 +101,12 @@ function EmployeeForm({ addEmployee }) {
       }
 
       //send form data into backend
-      const response = await axios.post('http://localhost:5000/api/employees', formData, { //API endpoint where the data is send
+      const response = await axios.post('http://localhost:5000/api/employees', employee, {
         headers: {
-          'Content-Type': 'multipart/form-data', //Tells the server to expect file and form data.
+          'Content-Type': 'application/json', // Now sending JSON instead of form data
         },
       });
+      
 
       // if success then alert and add employee
       if (response.status === 201) {
@@ -132,7 +122,6 @@ function EmployeeForm({ addEmployee }) {
           mobileNo: "",
           dob: "",
           dateOfJoining: "",
-          photo: null,
           address: "",
           salary: "",
           designation: "",
@@ -246,13 +235,6 @@ function EmployeeForm({ addEmployee }) {
           onChange={handleChange}
         />
 
-        <label htmlFor="photo">Photo:</label>
-        <input 
-          type="file" 
-          name="photo" 
-          accept="image/png, image/jpeg, image/jpg"
-          onChange={handleChange} />
-
         <label htmlFor="address">Address:</label>
         <textarea
           name="address"
@@ -280,6 +262,25 @@ function EmployeeForm({ addEmployee }) {
         />
 
         <button type="submit" className="submit-btn">Submit</button>
+
+        {/* Clear button to reset the form */}
+        <button type="button" className="clear-btnn"
+        onClick={() => {
+        // Reset the form fields
+        setEmployee({
+          empId: "",
+          firstName: "",
+          lastName: "",
+          department: "",
+          email: "",
+          mobileNo: "",
+          dob: "",
+          dateOfJoining: "",
+          address: "",
+          salary: "",
+          designation: "",
+        });
+  }} >Clear form</button>
       </form>
     </div>
   );

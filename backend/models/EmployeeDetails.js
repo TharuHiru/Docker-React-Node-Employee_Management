@@ -1,3 +1,5 @@
+//Schema to store employee details in mongodb
+
 const mongoose = require('mongoose');
 
 const employeeschema = new mongoose.Schema({
@@ -9,7 +11,6 @@ const employeeschema = new mongoose.Schema({
   mobileNo: { type: String },
   dob: { type: Date },
   dateOfJoining: { type: Date },
-  photo: { type: String }, // Store file path or URL
   address: { type: String },
   salary: { type: Number },
   designation: { type: String },

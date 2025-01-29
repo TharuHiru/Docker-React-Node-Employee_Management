@@ -34,7 +34,7 @@ app.use('/uploads', express.static(uploadsDir));
 // CORS middleware
 app.use(
   cors({
-    origin: 'https://employee-management-2z1.pages.dev', // Allow React frontend
+    origin: 'http://localhost:3000',// Allow React frontend
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow specific HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allow headers
     credentials: true, // Allow cookies if needed

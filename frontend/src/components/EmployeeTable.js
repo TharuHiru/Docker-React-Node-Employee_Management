@@ -100,7 +100,7 @@ function EmployeeTable() {
     setEditedEmployee(editableFields);
   };
 
-  //Function for input validation
+  //Function for input validation of edit form
   const validateInput = (data) => {
     const errors = [];
   
@@ -119,8 +119,8 @@ function EmployeeTable() {
     else if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
       errors.push("Valid Email is required.");
     }
-    else if (!data.mobileNo || !/^\d{10}$/.test(data.mobileNo)) {
-      errors.push("Mobile Number must be 10 digits.");
+    else if (!data.mobileNo || !/^\d{9}$/.test(data.mobileNo)) {
+      errors.push("Mobile Number must be 9 digits.");
     }
     else if (!data.salary || data.salary <= 0) {
       errors.push("Salary must be a positive number.");
@@ -154,11 +154,12 @@ function EmployeeTable() {
         setEmployees((prev) =>
           prev.map((employee) => (employee._id === editMode ? editedEmployee : employee))
         );
+        toast.success("Employee Updated Successfully");
         setEditMode(null); // hide the editing mode
       }
     } catch (error) {
       console.error('Error updating employee:', error);
-      alert('Error updating employee. Please try again.');
+      toast.error('Error updating employee. Please try again.');
     }
   };
 
@@ -224,7 +225,6 @@ function EmployeeTable() {
                 <th>Date of Joining</th>
                 <th>Salary</th>
                 <th>Designation</th>
-                <th>Profile Photo</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -304,18 +304,6 @@ function EmployeeTable() {
                           />
                         </td>
                         <td>
-                          <input
-                            type="file"
-                            name="photo"
-                            onChange={(e) =>
-                              setEditedEmployee({
-                                ...editedEmployee,
-                                photo: e.target.files[0],
-                              })
-                            }
-                          />
-                        </td>
-                        <td>
                           <button
                             className="update-btn"
                             onClick={handleUpdate}
@@ -344,13 +332,6 @@ function EmployeeTable() {
                         <td>{employee.dateOfJoining}</td>
                         <td>{employee.salary}</td>
                         <td>{employee.designation}</td>
-                        <td>
-                          <img
-                            src={`http://localhost:5000/uploads/${employee.photo}`}
-                            alt="Profile"
-                            className="profile-photo"
-                          />
-                        </td>
                         <td>
                           <button
                             className="edit-btn"

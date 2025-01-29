@@ -31,7 +31,7 @@ function Signup() { // variables to store email and password
 
     try {
       //send a POST request to the endpoint with the usename and password
-      const response = await axios.post('employeemanagement-dkcfbchnaxdqgwbf.centralindia-01.azurewebsites.net/api/signup', { email, password });
+      const response = await axios.post('http://localhost:5000/api/signup', { email, password });
       if (response.status === 201) {
         toast.success('Signup Successful!');
         navigate('/'); // Redirect to the login page

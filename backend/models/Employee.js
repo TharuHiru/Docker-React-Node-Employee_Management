@@ -1,3 +1,6 @@
+
+//The scema for save the login information in mongodb
+
 const mongoose = require('mongoose');
 
 const employeeSchema = new mongoose.Schema({

@@ -5,11 +5,9 @@ const Employee = require('../models/Employee');
 const EmployeeDetails = require('../models/EmployeeDetails');
 
 const router = express.Router();
-
-// Signup route
 const { body, validationResult } = require('express-validator');
 
-// Signup route with input validation
+// route for signUP
 router.post(
   '/signup',
   [
@@ -26,12 +24,15 @@ router.post(
 
         // Check if the email already exists in the database
         const existingEmployee = await Employee.findOne({ email });
+
         if (existingEmployee) {
           return res.status(400).json({ message: 'Email already exists' });
         }
 
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+      //create the new employee with the hashed password
       const newEmployee = new Employee({ email, password: hashedPassword });
 
       await newEmployee.save();
@@ -43,12 +44,12 @@ router.post(
 );
 
 
-// Login route
+// route for login
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find the employee by email
+    // Find the employee by email from the database
     const employee = await Employee.findOne({ email });
     if (!employee) {
       return res.status(404).json({ message: 'Invalid email or password' });
@@ -67,31 +68,11 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  },
-});
-
-const upload = multer({ storage });
-
-const empIdExists = async (empId) => {
-  try {
-    const employee = await EmployeeDetails.findOne({ empId });
-    return employee !== null; // returns true if employee exists, false otherwise
-  } catch (error) {
-    throw new Error('Error checking empId availability');
-  }
-};
-
-// Add a new employee details
+// route for Add an employee
 router.post(
   '/employees',
-  upload.single('photo'),
+
+  //These fields should be there
   [
     body('empId').isString().notEmpty().withMessage('Employee ID is required'),
     body('email').isEmail().withMessage('Invalid email format'),
@@ -105,12 +86,15 @@ router.post(
     }
     try {
       const { empId, firstName, lastName, department, email, mobileNo, dob, dateOfJoining, address, salary, designation } = req.body;
-      const photo = req.file ? req.file.path : null;
+
+      //check if the employeeID exists
+      const empIdExists = await EmployeeDetails.findOne({ empId });
 
       if (empIdExists) {
         return res.status(400).json({ message: 'Employee ID already exists.' });
       }
 
+      //create new employee object
       const newEmployeeDetails = new EmployeeDetails({
         empId,
         firstName,
@@ -120,7 +104,6 @@ router.post(
         mobileNo,
         dob,
         dateOfJoining,
-        photo,
         address,
         salary,
         designation,
@@ -135,7 +118,7 @@ router.post(
 );
 
 
-// Get all employees details
+// route for get employee details
 router.get('/employees', async (req, res) => {
   try {
     const employees = await EmployeeDetails.find();
@@ -145,7 +128,7 @@ router.get('/employees', async (req, res) => {
   }
 });
 
-// Update an employee
+//route for update employee details
 router.put('/employees/:id', async (req, res) => {
   try {
     const updatedEmployee = await EmployeeDetails.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -155,7 +138,7 @@ router.put('/employees/:id', async (req, res) => {
   }
 });
 
-// Delete an employee
+//routr for delete an employee
 router.delete('/employees/:id', async (req, res) => {
   try {
     await EmployeeDetails.findByIdAndDelete(req.params.id);
@@ -165,4 +148,5 @@ router.delete('/employees/:id', async (req, res) => {
   }
 });
 
+//export the route
 module.exports = router;

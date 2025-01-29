@@ -15,7 +15,7 @@ function Login() {
     console.log('Attempting to login with:', { email, password }); // Log input data
 
     try {
-        const response = await fetch('employeemanagement-dkcfbchnaxdqgwbf.centralindia-01.azurewebsites.net/api/login', {
+        const response = await fetch('http://localhost:5000/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,11 +37,11 @@ function Login() {
 
         } else {
             console.error('Login failed:', data.error);
-            toast.err("Error log in . Try again"); // Display error message to user
+            toast.error("Username or password is incorrect"); // Display error message to user
         }
     } catch (err) {
         console.error('Error during login:', err); // Log network or unexpected errors
-        alert('An error occurred. Please check your connection and try again.');
+        toast.error('An error occurred. Please check your connection and try again.');
     }
 };
 

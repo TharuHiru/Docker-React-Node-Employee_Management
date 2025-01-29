@@ -4,6 +4,7 @@ const multer = require('multer');
 const Employee = require('../models/Employee');
 const EmployeeDetails = require('../models/EmployeeDetails');
 
+//use express validator to sanitize the input
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 
@@ -15,6 +16,10 @@ router.post(
     body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
   ],
   async (req, res) => {
+
+    // Prevent caching for this route
+    res.set('Cache-Control', 'no-store, must-revalidate');
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -23,6 +28,8 @@ router.post(
       const { email, password } = req.body;
 
         // Check if the email already exists in the database
+
+        //used mongoose methods to prevent SQL injection
         const existingEmployee = await Employee.findOne({ email });
 
         if (existingEmployee) {
@@ -46,6 +53,10 @@ router.post(
 
 // route for login
 router.post('/login', async (req, res) => {
+
+  // Prevent caching for this route
+  res.set('Cache-Control', 'no-store, must-revalidate');
+
   try {
     const { email, password } = req.body;
 
@@ -120,6 +131,10 @@ router.post(
 
 // route for get employee details
 router.get('/employees', async (req, res) => {
+
+  // Prevent caching for this route
+  res.set('Cache-Control', 'no-store, must-revalidate');
+
   try {
     const employees = await EmployeeDetails.find();
     res.status(200).json(employees);
@@ -130,6 +145,10 @@ router.get('/employees', async (req, res) => {
 
 //route for update employee details
 router.put('/employees/:id', async (req, res) => {
+
+  // Prevent caching for this route
+  res.set('Cache-Control', 'no-store, must-revalidate');
+
   try {
     const updatedEmployee = await EmployeeDetails.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.status(200).json(updatedEmployee);
@@ -140,6 +159,10 @@ router.put('/employees/:id', async (req, res) => {
 
 //routr for delete an employee
 router.delete('/employees/:id', async (req, res) => {
+
+  // Prevent caching for this route
+  res.set('Cache-Control', 'no-store, must-revalidate');
+
   try {
     await EmployeeDetails.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: 'Employee deleted successfully' });

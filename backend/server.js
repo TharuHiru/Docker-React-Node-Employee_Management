@@ -22,16 +22,7 @@ if (!process.env.MONGODB_URI) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Add this line to parse form data
 
-// Ensure the uploads directory exists
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir);
-}
-
-// Serve static files from the uploads directory
-app.use('/uploads', express.static(uploadsDir));
-
-// CORS middleware
+// CORS middleware (cess your resources. This helps )
 app.use(
   cors({
     origin: 'http://localhost:3000',// Allow React frontend

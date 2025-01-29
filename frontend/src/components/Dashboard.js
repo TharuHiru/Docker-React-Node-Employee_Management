@@ -23,7 +23,7 @@ return (
   <div className="container">
     <header>
     <Helmet>
-        <title>Dashboard | Employee Management System</title>
+        <title> Dashboard | Employee Management System</title>
         <meta name="description" content="Form to add a new employee" />
       </Helmet>
       <h1 className='heading'>Welcome to the Dashboard</h1>

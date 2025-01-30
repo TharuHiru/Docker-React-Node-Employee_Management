@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true })); // Add this line to parse form 
 // CORS middleware (cess your resources. This helps )
 app.use(
   cors({
-    origin: 'http://localhost:3000',// Allow React frontend
+    origin: 'https://employee-management-2z1.pages.dev',// Allow React frontend
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow specific HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allow headers
     credentials: true, // Allow cookies if needed

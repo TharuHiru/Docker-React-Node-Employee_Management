@@ -29,7 +29,7 @@ function EmployeeTable() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:5000/api/employees/${id}`);
+          await axios.delete(`https://emp-mng-gjb7hcf7h2apghcr.centralindia-01.azurewebsites.net/api/employees/${id}`);
           setEmployees((prev) => prev.filter((employee) => employee._id !== id));
 
           // Show SweetAlert success dialog
@@ -46,7 +46,7 @@ function EmployeeTable() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/employees');
+        const response = await axios.get('https://emp-mng-gjb7hcf7h2apghcr.centralindia-01.azurewebsites.net/api/employees');
         setEmployees(response.data);
       } catch (error) {
         console.error('Error fetching employees:', error);
@@ -148,7 +148,7 @@ function EmployeeTable() {
     }
 
     try { // awaits means wair for servers response
-      const response = await axios.put(`http://localhost:5000/api/employees/${editMode}`, editedEmployee); // editMode has the ID of the employee being edited
+      const response = await axios.put(`https://emp-mng-gjb7hcf7h2apghcr.centralindia-01.azurewebsites.net/api/employees/${editMode}`, editedEmployee); // editMode has the ID of the employee being edited
       if (response.status === 200) // if success then update the employee
       {
         setEmployees((prev) =>

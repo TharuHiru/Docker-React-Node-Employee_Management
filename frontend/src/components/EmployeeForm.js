@@ -101,7 +101,7 @@ function EmployeeForm({ addEmployee }) {
       }
 
       //send form data into backend
-      const response = await axios.post('http://localhost:5000/api/employees', employee, {
+      const response = await axios.post('https://emp-mng-gjb7hcf7h2apghcr.centralindia-01.azurewebsites.net/api/employees', employee, {
         headers: {
           'Content-Type': 'application/json', // Now sending JSON instead of form data
         },

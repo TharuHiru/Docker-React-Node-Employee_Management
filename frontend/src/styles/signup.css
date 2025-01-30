@@ -99,6 +99,7 @@ body {
   padding: 0.75rem;
   border-radius: 15px;
   border: none;
+  margin-left: 35px;
   background: linear-gradient(135deg, #ff7e5f, #feb47b);
   color: #fff;
   font-size: 1rem;

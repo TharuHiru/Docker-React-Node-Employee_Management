@@ -96,4 +96,3 @@ This is a simple Employee Management System built with **Node.js**, **Express**,
 
 ### Project structure
 employee-management/ │ ├── backend/ │ ├── config/ │ │ └── db.js # MongoDB connection setup │ ├── models/ │ │ └── EmployeeDetails.js # Employee schema │ ├── routes/ │ │ └── employeeRoutes.js # Routes for employee operations │ ├── app.js # Express application setup │ └── server.js # Server entry point │ └── frontend/ ├── src/ │ ├── components/ │ │ ├── EmployeeForm.js # Form component for adding employees │ │ └── EmployeeList.js # Component to display employee list │ ├── App.js # Main app component │ └── index.js # React entry point └── README.md # Project documentation file
-dd

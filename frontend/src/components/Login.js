@@ -15,7 +15,7 @@ function Login() {
     console.log('Attempting to login with:', { email, password }); // Log input data
 
     try {
-        const response = await fetch('https://emp-mng-gjb7hcf7h2apghcr.centralindia-01.azurewebsites.net/api/login', {
+        const response = await fetch('http://localhost:5000/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

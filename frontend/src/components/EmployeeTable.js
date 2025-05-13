@@ -29,7 +29,7 @@ function EmployeeTable() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`https://emp-mng-gjb7hcf7h2apghcr.centralindia-01.azurewebsites.net/api/employees/${id}`);
+         await axios.delete(`http://localhost:5000/api/employees/${id}`);
           setEmployees((prev) => prev.filter((employee) => employee._id !== id));
 
           // Show SweetAlert success dialog

@@ -26,8 +26,8 @@ describe('Login Page Tests', () => {
 
   it('Should login successfully with correct credentials', () => {
     // Replace with a real test user (or mock API)
-    cy.get('input[type="email"]').type('admin@example.com')
-    cy.get('input[type="password"]').type('admin123')
+    cy.get('input[type="email"]').type('naduni@gmail.com')
+    cy.get('input[type="password"]').type('hitharushika')
     cy.get('button[type="submit"]').click()
 
     // Check for success toast & redirect
